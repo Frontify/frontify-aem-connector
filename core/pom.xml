@@ -19,7 +19,7 @@
     <parent>
         <groupId>io.github.frontify</groupId>
         <artifactId>frontify-aem-connector</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>frontify-aem-connector.core</artifactId>
