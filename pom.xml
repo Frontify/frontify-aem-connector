@@ -42,7 +42,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/Frontify/frontify-aem-connector.git</connection>
-        <developerConnection>scm:git:ssh://github.com:Frontify/frontify-aem-connector.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/Frontify/frontify-aem-connector.git</developerConnection>
         <url>https://github.com/Frontify/frontify-aem-connector/tree</url>
       <tag>frontify-aem-connector-1.10</tag>
   </scm>
