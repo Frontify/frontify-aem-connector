@@ -19,7 +19,7 @@
     <groupId>io.github.frontify</groupId>
     <artifactId>frontify-aem-connector</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Connector to use Frontify assets within Adobe Experience Manager (AEM).</description>
     <url>https://github.com/Frontify/frontify-aem-connector</url>
@@ -44,8 +44,8 @@
         <connection>scm:git:git://github.com/Frontify/frontify-aem-connector.git</connection>
         <developerConnection>scm:git:https://github.com/Frontify/frontify-aem-connector.git</developerConnection>
         <url>https://github.com/Frontify/frontify-aem-connector/tree/master</url>
-      <tag>frontify-aem-connector-1.0.1</tag>
-  </scm>
+        <tag>frontify-aem-connector-1.0.1</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -89,19 +89,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
-                <configuration>                    
-                    <preparationGoals>clean install</preparationGoals>
-                    <goals>install</goals>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
-                    <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+                    <goals>deploy</goals>
                 </configuration>
-                <dependencies>
-					<dependency>
-						<groupId>org.apache.maven.scm</groupId>
-						<artifactId>maven-scm-provider-gitexe</artifactId>
-						<version>1.9.5</version>
-					</dependency>
-				</dependencies>
             </plugin>
             <!-- Maven Source Plugin -->
             <plugin>
@@ -110,43 +103,43 @@
                 <version>3.0.1</version>
                 <inherited>true</inherited>
                 <executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>8</source>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadoc</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>8</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadoc</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <!-- Maven Enforcer Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -231,7 +224,8 @@
                                 <goal>bnd-process</goal>
                             </goals>
                             <configuration>
-                                <bnd><![CDATA[
+                                <bnd>
+                                    <![CDATA[
 Bundle-Category: ${componentGroupName}
 
 # export all versioned packages except for conditional ones (https://github.com/bndtools/bnd/issues/3721#issuecomment-579026778)
@@ -244,7 +238,8 @@ Bundle-Category: ${componentGroupName}
 Bundle-DocURL:
 -plugin org.apache.sling.caconfig.bndplugin.ConfigurationClassScannerPlugin
 -plugin org.apache.sling.bnd.models.ModelsScannerPlugin
-                                ]]></bnd>
+                                ]]>
+                                </bnd>
                             </configuration>
                         </execution>
                     </executions>
@@ -434,39 +429,37 @@ Bundle-DocURL:
         </pluginManagement>
     </build>
 
-    
 
     <profiles>
         <!-- GPG Signature on release -->
-		<profile>
-			<id>release-sign-artifacts</id>
-			<activation>
-            <activeByDefault>true</activeByDefault>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
 
         <!-- ====================================================== -->
@@ -833,7 +826,7 @@ Bundle-DocURL:
             <dependency>
                 <groupId>uk.org.lidalia</groupId>
                 <artifactId>slf4j-test</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.0-SNAPSHOT</version>
                 <scope>test</scope>
             </dependency>
 
