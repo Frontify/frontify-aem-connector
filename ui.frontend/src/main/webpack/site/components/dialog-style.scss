@@ -1,0 +1,96 @@
+#ffy-container-finder {
+     width: 600px;
+     height: 500px;
+}
+
+.coral3-Icon--frontify {
+  background-image: url('/content/dam/frontify-aem-connector/frontify-drop-mark-main-rgb.png/_jcr_content/renditions/cq5dam.web.1280.1280.png');
+    width: 24px;
+    height: 18px;
+    filter: saturate(0%);
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-position: 4px 0;
+}
+
+.is-selected .coral3-Icon--frontify:hover {
+    filter: saturate(100%);
+    opacity: 1;
+}
+
+.is-selected .coral3-Icon--frontify {
+    filter: saturate(80%);
+    opacity: 1;
+}
+
+.frontify-info-text {
+    display: block;
+    width: 100%;
+    padding-top: 3rem;
+    color: #525252;
+    text-align: center;
+    font-weight: lighter;
+}
+
+.frontify-info-text .infoTextTitle {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.frontify-info-text .infoText {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.logout-frontify-title {
+  top: 10px;
+}
+
+#frontifylogout {
+  float: right;
+  padding-top: 0;
+  padding-bottom: 2.5rem;
+}
+
+.coral-DecoratedTextfield{
+  width: 100%;
+}
+
+
+.sidepanel .frontify-content-panel {
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidepanel .frontify-content-panel > .emptyresult {
+  width: 100%;
+  padding-bottom: 3rem;
+  padding-top: 3rem;
+  color: #525252;
+  text-align: center;
+  font-weight: lighter;
+}
+.sidepanel .frontify-content-panel > .emptyresult > span {
+  display: block;
+}
+.sidepanel .frontify-content-panel > .emptyresult .noresults {
+  font-size: 1.5625rem;
+}
+.sidepanel .frontify-content-panel > .emptyresult .retry {
+  font-size: 1.125rem;
+  padding-top: 0.5rem;
+}
+
+
+.frontify-noconfig-panel{
+  display: none;
+}
+
+@media screen and (min-width: 1025px) {
+  .sidepanel .frontify-content-panel.content-panel.editor-SidePanel-results {
+    max-height: 85vh;
+  }
+}

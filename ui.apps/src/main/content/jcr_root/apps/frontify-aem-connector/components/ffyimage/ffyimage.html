@@ -1,0 +1,10 @@
+<sly data-sly-use.image="com.frontify.core.models.FrontifyImage"></sly>
+
+<a data-sly-unwrap="${!image.hasLinkUrl}" href="${image.linkUrl}">
+    <img data-sly-test="${image.fileReference}"
+         src="${image.fileReference @ context='unsafe'}"
+         title="${image.title}"
+         alt="${image.alt}"/>
+</a>
+
+<div data-sly-test="${(wcmmode.edit || wcmmode.preview) && !image.fileReference}" class="cq-placeholder cmp-image cq-dd-image" data-emptytext="Frontify image"></div>

@@ -1,0 +1,4 @@
+#base=js
+#frontify-finder-latest.min.js
+frontify-authenticator-latest.min.js
+#ffy-dam-author-panel.js

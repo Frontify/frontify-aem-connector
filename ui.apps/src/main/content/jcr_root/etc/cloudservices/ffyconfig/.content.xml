@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2020-06-22T11:32:59.504Z"
+        cq:lastModifiedBy="admin"
+        cq:template="/libs/cq/cloudserviceconfigs/templates/servicepage"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Frontify"
+        sling:resourceType="cq/cloudserviceconfigs/components/servicepage"
+        description="Frontify is the all-in-one brand management platform for building powerful brand experiences."
+        thumbnailPath="/content/dam/frontify-aem-connector/frontify-drop-mark-main-rgb.png"/>
+    <ffy-demo-server/>
+</jcr:root>

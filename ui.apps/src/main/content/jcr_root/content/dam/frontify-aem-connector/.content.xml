@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="sling:OrderedFolder">
+    <jcr:content
+        cq:conf="/conf/frontify-aem-connector"
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Frontify AEM Connector">
+        <folderThumbnail/>
+    </jcr:content>
+    <asset.jpg/>
+    <eyJwYXRoIjoid2VhcmVcL2FjY291bnRzXC82ZVwvNDAwMDM4OFwvcHJvamVjdHNcLzQ5OFwvYXNzZXRzXC82YlwvMzM1NjBcLzNiMjUxZGZmNjE2MzE2NDJlMDI5MGNkNTdlZGRiNmYxLTE1ODYyNjU0ODEuanBnIn0_weare_YOz3UULdhX3B.jpg/>
+    <frontify-drop-mark-main-rgb.png/>
+</jcr:root>

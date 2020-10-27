@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+            jcr:primaryType="nt:unstructured"
+            jcr:title="AEM Sites Page Editor"
+            sling:resourceType="cq/gui/components/authoring/editors/core"
+            consoleId="cq-sites-editor-page"
+            mainClientLib="cq.authoring.editor.sites.page"
+            onboardingPath="/mnt/overlay/wcm/core/content/editor/onboarding.html"
+            trackingFeature="Page Editor">
+        <content/>
+        <sidepanels jcr:primaryType="nt:unstructured">
+            <plugin/>
+            <developer/>
+            <edit
+                    granite:class="js-SidePanel-content js-SidePanel-content--edit"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    <tabs
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                            margin="{Boolean}true"
+                            maximized="{Boolean}true"
+                            orientation="vertical"
+                            size="L">
+                        <items jcr:primaryType="nt:unstructured">
+                            <frontifyTab
+                                    granite:class="sidepanel-tab ffy-sidepanel-tab-assets"
+                                    jcr:primaryType="nt:unstructured"
+                                    jcr:title="Frontify"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <granite:data
+                                        jcr:primaryType="nt:unstructured"
+                                        headerTitle="Frontify Search Assets"/>
+                                <parentConfig
+                                        jcr:primaryType="nt:unstructured"
+                                        icon="frontify"/>
+                                <items jcr:primaryType="nt:unstructured">
+                                    <loginPanel
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/foundation/container"
+                                            class="frontify-login-panel">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <title
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/text"
+                                                    class="sidepanel-tab-title"
+                                                    text="Frontify Assets"/>
+                                            <loginButton
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/button"
+                                                    text="Log in to Frontify"
+                                                    class="coral-Button--block"
+                                                    icon="coral-Icon--user"
+                                                    iconSize="S"
+                                                    variant="primary"
+                                                    type="button"
+                                                    id="frontifylogin"/>
+                                            <frontifyInfoText
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/contsys"
+                                                    class="frontify-info-text"
+                                                    htmlWrapTag="div">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <frontifyInfo
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/foundation/text"
+                                                            class="infoTextTitle"
+                                                            text="Frontify gallery"/>
+                                                    <text
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/foundation/text"
+                                                            class="infoText"
+                                                            text="Please login in order to load and use Frontify images"/>
+                                                </items>
+                                            </frontifyInfoText>
+                                        </items>
+                                    </loginPanel>
+                                    <logoutPanel
+                                            granite:class="frontify-logout-panel"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <title
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    granite:class="sidepanel-tab-title">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <titleText
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                            granite:class="logout-frontify-title"
+                                                            text="Frontify Assets"/>
+                                                    <logoutIcon
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/button"
+                                                            align="right"
+                                                            granite:class="frontify-logout-icon"
+                                                            icon="lockOff"
+                                                            iconSize="S"
+                                                            size=""
+                                                            variant="quiet"
+                                                            granite:id="frontifylogout"
+                                                            text="logout from Frontify"
+                                                            minimal="{Boolean}true"
+                                                            hideText="{Boolean}true"/>
+                                                </items>
+                                            </title>
+                                        </items>
+                                    </logoutPanel>
+                                    <filterPanel
+                                            granite:class="filter-panel coral-Form--vertical frontify-filter-panel"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                                            id="components-filter">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <fulltextsearch
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/form/decoratedtextfield"
+                                                    class="search"
+                                                    emptyText="Enter keyword(s)"
+                                                    icon="coral-Icon--search"
+                                                    id="frontifysearch">
+                                                <button
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/foundation/button"
+                                                        hideText="{Boolean}true"
+                                                        icon="coral-Icon--close"
+                                                        iconSize="XS"
+                                                        minimal="{Boolean}true"
+                                                        title="clear"
+                                                        class="clearFrontifySearch"
+                                                        variant="quiet"/>
+                                            </fulltextsearch>
+                                            <assettype
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                    emptyText="Filter by category"
+                                                    filterType="General"
+                                                    name="frontifyfilter_type_selector"
+                                                    granite:id="frontifyfilter_type_selector"
+                                                    text="Images">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                </items>
+                                            </assettype>
+                                            <filterResultPanel
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/container"
+                                                    class="selected-filter-panel">
+                                                <items jcr:primaryType="nt:unstructured"/>
+                                            </filterResultPanel>
+                                        </items>
+                                    </filterPanel>
+                                    <contentPanel
+                                            granite:class="frontify-content-panel content-panel editor-SidePanel-results"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <assetfinder
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="cq/gui/components/authoring/assetfinder"
+                                                    class="frontifyfinder assetfinder-content-container grid"/>
+                                            <emptyresult
+                                                    granite:class="emptyresult editor-SidePanel-resultMessage"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <noresults
+                                                            granite:class="noresults"
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                            text="No results"/>
+                                                    <retry
+                                                            granite:class="retry"
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                            text="Please try with another keyword"/>
+                                                </items>
+                                            </emptyresult>
+                                        </items>
+                                    </contentPanel>
+                                    <noConfigPanel
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/foundation/container"
+                                            class="frontify-noconfig-panel">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <title
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/text"
+                                                    class="sidepanel-tab-title"
+                                                    text="Frontify Assets"/>
+                                            <frontifyInfo
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/foundation/contsys"
+                                                    class="frontify-info-text"
+                                                    htmlWrapTag="div">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <frontifyInfoTitle
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/foundation/text"
+                                                            class="infoTextTitle"
+                                                            text="Frontify gallery"/>
+                                                    <text
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/foundation/text"
+                                                            class="infoText"
+                                                            text="Please contact your administrator to configure the Frontify connector."/>
+                                                </items>
+                                            </frontifyInfo>
+                                        </items>
+                                    </noConfigPanel>
+                                </items>
+                            </frontifyTab>
+                        </items>
+                    </tabs>
+                </items>
+            </edit>
+            <empty/>
+        </sidepanels>
+    </jcr:content>
+    <scaffoldhost/>
+    <userproperties/>
+    <onboarding/>
+    <tour/>
+</jcr:root>
