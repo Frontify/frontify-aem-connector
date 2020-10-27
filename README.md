@@ -1,4 +1,4 @@
-# Frontify AEM connector project
+#Frontify AEM connector project
 
 This is a project for Frontify AEM integration.
 
