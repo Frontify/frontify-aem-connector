@@ -33,6 +33,7 @@
 
     <developers>
         <developer>
+            <id>support@frontify.com</id>
             <name>Frontify Support</name>
             <email>support@frontify.com</email>
             <organization>Frontify AG</organization>
@@ -407,7 +408,7 @@ Bundle-DocURL:
 		<profile>
 			<id>release-sign-artifacts</id>
 			<activation>
-            <activeByDefault>true</activeByDefault>
+            <activeByDefault>false</activeByDefault>
 				<property>
 					<name>performRelease</name>
 					<value>true</value>
@@ -432,13 +433,13 @@ Bundle-DocURL:
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.2.1</version>
                         <inherited>true</inherited>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>jar-no-fork</goal>
                                 </goals>
                             </execution>
                         </executions>
