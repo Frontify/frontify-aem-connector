@@ -19,7 +19,7 @@
     <groupId>io.github.frontify</groupId>
     <artifactId>frontify-aem-connector</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Connector to use Frontify assets within Adobe Experience Manager (AEM).</description>
     <url>https://github.com/Frontify/frontify-aem-connector</url>
