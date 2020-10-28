@@ -90,11 +90,10 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>                    
-                    <preparationGoals>clean install</preparationGoals>
-                    <goals>install</goals>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release-sign-artifacts</releaseProfiles>
                     <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+                    <goals>deploy</goals>
                 </configuration>
                 <dependencies>
 					<dependency>
