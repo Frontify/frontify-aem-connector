@@ -17,6 +17,14 @@ public final class LinkUtil {
     private LinkUtil() {
     }
 
+    /**
+     * Does page path externalization
+     *
+     * @param request SlingHttpServletRequest
+     * @param path content path that need to be externalized
+     * @param settingsService object so that run mode is checked
+     * @return externalized page path depending on the run mode.
+     */
     public static String externalizePath(SlingHttpServletRequest request, String path, SlingSettingsService settingsService) {
         final ResourceResolver resourceResolver = request.getResourceResolver();
         if (isPage(path, resourceResolver)) {
