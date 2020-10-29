@@ -30,13 +30,13 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
 
     //cache values
     var localCategories = sessionStorage.getItem("ffy.categories");
-    if (localCategories == null || localCategories == undefined) {
+    if (localCategories === null || localCategories === undefined) {
         try {
             data = await graphQLClient.request(query);
             } catch (error) {
             $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
         }
-        if (data != null || data != undefined) {
+        if (data !== null || data !== undefined) {
             sessionStorage.setItem("ffy.categories", JSON.stringify(data));
             localCategories = JSON.stringify(data);           
         } else {
@@ -44,11 +44,11 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
         }
     }
     
-    if (localCategories != null && localCategories != undefined) {
+    if (localCategories !== null && localCategories !== undefined) {
         var categoriesListSelectHidden = $("#frontifyfilter_type_selector");
 
     var entries = JSON.parse(localCategories).brands;
-    if ($("#frontifyfilter_type_selector coral-selectlist").children().length == 0 ) {
+    if ($("#frontifyfilter_type_selector coral-selectlist").children().length === 0 ) {
         for (var brandIndex = 0; brandIndex < entries.length; brandIndex++ ) {
             var brand = entries[brandIndex];
             for (var i = 0; i < brand.projects.length; i++) {
@@ -61,10 +61,10 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
         } 
     }
 
-    if (sessionStorage.getItem("ffy.chosenCategory") != null) {
-        var selectedValue = sessionStorage.getItem("ffy.chosenCategory");
-        $("#frontifyfilter_type_selector coral-select-item[value=" + sessionStorage.getItem("ffy.chosenCategory") + "]").attr('selected', 'selected');
-        $("#frontifyfilter_type_selector coral-select-item[value=" + sessionStorage.getItem("ffy.chosenCategory") + "]").change();
+    var selectedValue = sessionStorage.getItem("ffy.chosenCategory");
+    if (selectedValue !== null) {
+        $("#frontifyfilter_type_selector coral-select-item[value=" + selectedValue+ "]").attr('selected', 'selected');
+        $("#frontifyfilter_type_selector coral-select-item[value=" + selectedValue + "]").change();
     } else {
         var firstProjectId = JSON.parse(sessionStorage.getItem("ffy.categories")).brands[0].projects[0].id;
         $("#frontifyfilter_type_selector coral-select-item[value=" + firstProjectId + "]").attr('selected', 'selected');
@@ -76,7 +76,4 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
 
     }
 
-
-
 }
-    

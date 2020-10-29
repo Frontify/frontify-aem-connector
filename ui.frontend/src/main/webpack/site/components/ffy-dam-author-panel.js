@@ -69,15 +69,14 @@ function renderAssets(frontifyAssets) {
 }
 
 function cleanUpDataAssets(data) {
-    const cleanAssets = data.filter(function(element, index) {
-        if (element != null && element != undefined) {
+    return data.filter(function(element) {
+        if (element !== null && element !== undefined) {
           if(element.hasOwnProperty("generic_url"))  {
             return element;
           }
         }
         
     });
-    return cleanAssets;
 }
 
 
@@ -88,7 +87,7 @@ async function handleUpdateAssetList(endpoint, domain) {
             'accept': 'application/json',
             authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token'),
 
-        },
+        }
     });
 
     const query = /* GraphQL */ `
@@ -142,10 +141,10 @@ async function handleUpdateAssetList(endpoint, domain) {
         if(hasNextPage && pageNumber < noPages){
             $(".resultspinner").show();
             pageNumber +=1;
-            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber); // check
+            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber);
             scrollTriggered = true;
         } else {
-            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber); // check
+            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber);
 
         }
     } else {
@@ -164,7 +163,7 @@ async function handleUpdateAssetList(endpoint, domain) {
         $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
     }
 
-    if (data !== null && data.project.assets != null && data.project.assets.items != null && !scrollTriggered) {
+    if (data !== null && data.project.assets !== null && data.project.assets.items !== null && !scrollTriggered) {
         frontifyAssets = cleanUpDataAssets(data.project.assets.items);
     } else if(data !== null && scrollTriggered) {
         frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.project.assets.items));
@@ -246,7 +245,7 @@ $("#frontifyfilter_type_selector").on("change", function (event) {
     }
 });
 
-$("#frontifysearch").on("change", function (event) {
+$("#frontifysearch").on("change", function () {
     //save chosen option
     sessionStorage.setItem("ffy.chosenCategory", $("input[name=frontifyfilter_type_selector]").val());
     resetGlobals();

@@ -1,4 +1,3 @@
-import { handleUpdateCategoriesList } from './ffy-filter.js';
 import { obtainCloudConfiguration } from './ffy-dam-author-panel.js';
 
 function obtainCloudConfigurationForAuth () {
@@ -13,11 +12,10 @@ function obtainCloudConfigurationForAuth () {
 }
 
 
-$("#frontifylogin").on("click", function (event) {
+$("#frontifylogin").on("click", function () {
 
     obtainCloudConfigurationForAuth().then(
         function (data) {
-            const endpoint = data.endPoint;
             const domain = data.domain;
             FrontifyAuthenticator.authorize({
                 auth: {
@@ -30,16 +28,16 @@ $("#frontifylogin").on("click", function (event) {
                       title: 'Frontify Authenticator Popup',
                       size: {
                         width: 800,
-                        height: 600,
+                        height: 600
                       },
                       position: {
                         x: 50,
-                        y: 50,
-                      },
-                    },
+                        y: 50
+                      }
+                    }
                 },
                 domain: domain,
-                success: function(authClient) {
+                success: function() {
                     $('.frontify-login-panel').hide();
                     $('.frontify-logout-panel').show();
                     $('.frontify-filter-panel').show();
@@ -62,7 +60,7 @@ $("#frontifylogin").on("click", function (event) {
 
 });
 
-$("#frontifylogout").on("click", function (event) {
+$("#frontifylogout").on("click", function () {
 
     localStorage.removeItem("FrontifyAuthenticator_token");
     $('.frontify-logout-panel').hide();
