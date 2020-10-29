@@ -10,6 +10,7 @@ public class RunModeUtil {
     /**
      * Determines if the current AEM instance has the 'author' runmode enabled.
      *
+     * @param settingsService object so that run mode is checked
      * @return TRUE when the 'author' runmode is enabled.
      */
      static boolean isAuthorMode(SlingSettingsService settingsService) {
@@ -19,6 +20,7 @@ public class RunModeUtil {
     /**
      * Determines if the current AEM instance has the 'publish' runmode enabled.
      *
+     * @param settingsService object so that run mode is checked
      * @return TRUE when the 'publish' runmode is enabled.
      */
     static boolean isPublishMode(SlingSettingsService settingsService) {
@@ -28,6 +30,7 @@ public class RunModeUtil {
     /**
      * Determines if the current AEM instance has the 'local' runmode enabled.
      *
+     * @param settingsService object so that run mode is checked
      * @return TRUE when the 'local' runmode is enabled.
      */
     public static boolean isLocalMode(SlingSettingsService settingsService) {
