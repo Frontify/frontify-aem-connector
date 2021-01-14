@@ -75,7 +75,7 @@ function cleanUpDataAssets(data) {
             return element;
           }
         }
-        
+
     });
     return cleanAssets;
 }
@@ -102,7 +102,7 @@ async function handleUpdateAssetList(endpoint, domain) {
         }
       }
     }
-    project(id: $category) {
+    project(id: "$category") {
       ... on MediaLibrary {
         id
         name

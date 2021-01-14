@@ -38,12 +38,12 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
         }
         if (data != null || data != undefined) {
             sessionStorage.setItem("ffy.categories", JSON.stringify(data));
-            localCategories = JSON.stringify(data);           
+            localCategories = JSON.stringify(data);
         } else {
             $(window).adaptTo("foundation-ui").alert("Error", "Error obtaining categories");
         }
     }
-    
+
     if (localCategories != null && localCategories != undefined) {
         var categoriesListSelectHidden = $("#frontifyfilter_type_selector");
 
@@ -58,24 +58,23 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
                     text: brand.name + ' -  ' + item.name
                 }));
             }
-        } 
+        }
     }
 
-    if (sessionStorage.getItem("ffy.chosenCategory") != null) {
-        var selectedValue = sessionStorage.getItem("ffy.chosenCategory");
-        $("#frontifyfilter_type_selector coral-select-item[value=" + sessionStorage.getItem("ffy.chosenCategory") + "]").attr('selected', 'selected');
-        $("#frontifyfilter_type_selector coral-select-item[value=" + sessionStorage.getItem("ffy.chosenCategory") + "]").change();
-    } else {
-        var firstProjectId = JSON.parse(sessionStorage.getItem("ffy.categories")).brands[0].projects[0].id;
-        $("#frontifyfilter_type_selector coral-select-item[value=" + firstProjectId + "]").attr('selected', 'selected');
-        $("#frontifyfilter_type_selector coral-select-item[value=" + firstProjectId + "]").change();
+        if (sessionStorage.getItem("ffy.chosenCategory") != null) {
+            var selectedValue = sessionStorage.getItem("ffy.chosenCategory");
+            $("#frontifyfilter_type_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenCategory") + "']").attr('selected', 'selected');
+            $("#frontifyfilter_type_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenCategory") + "']").change();
+        } else {
+            var firstProjectId = JSON.parse(sessionStorage.getItem("ffy.categories")).brands[0].projects[0].id;
+            $("#frontifyfilter_type_selector coral-select-item[value='" + firstProjectId + "']").attr('selected', 'selected');
+            $("#frontifyfilter_type_selector coral-select-item[value='" + firstProjectId + "']").change();
 
     }
-    
+
     callback(endpoint, domain);
 
     }
-
 
 
 }
