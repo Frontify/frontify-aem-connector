@@ -24,29 +24,29 @@
           helpPath="https://www.adobe.com/go/aem_cmp_image_v2"
           trackingFeature="core-components:image:v2">
     <content
-        jcr:primaryType="nt:unstructured"
-        sling:resourceType="granite/ui/components/coral/foundation/container"
-        granite:class="cmp-image__editor">
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container"
+            granite:class="cmp-image__editor">
         <items jcr:primaryType="nt:unstructured">
             <tabs
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="granite/ui/components/coral/foundation/tabs"
-                maximized="{Boolean}true">
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                    maximized="{Boolean}true">
                 <items jcr:primaryType="nt:unstructured" sling:hideChildren="[*]">
                     <frontify
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Metadata"
-                        sling:resourceType="granite/ui/components/coral/foundation/container"
-                        margin="{Boolean}true">
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="Metadata"
+                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                            margin="{Boolean}true">
                         <items jcr:primaryType="nt:unstructured">
                             <columns
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
-                                margin="{Boolean}true">
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                    margin="{Boolean}true">
                                 <items jcr:primaryType="nt:unstructured">
                                     <column
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
                                         <items jcr:primaryType="nt:unstructured">
                                             <linkURL
                                                     jcr:primaryType="nt:unstructured"
@@ -63,12 +63,17 @@
                                                 <width
                                                         jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="granite/ui/components/foundation/form/numberfield"
+                                                        min="0"
+                                                        max="4096"
                                                         emptyText="Width"
                                                         name="./width"/>
                                                 <height
                                                         jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="granite/ui/components/foundation/form/numberfield"
                                                         emptyText="Height"
+                                                        min="0"
+                                                        max="4096"
+                                                        jcr:description="Enter 0 for auto scaling"
                                                         name="./height"/>
                                             </size>
                                             <alt
