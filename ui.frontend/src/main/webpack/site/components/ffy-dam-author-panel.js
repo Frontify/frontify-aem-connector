@@ -26,7 +26,7 @@ function getAltText(asset) {
 
 function renderAssets(frontifyAssets) {
 
-    frontifyAssets.forEach(asset => asset.imagePreviewUrl = asset.generic_url.replace(new RegExp(/\{width\}$/g), 319));
+    frontifyAssets.forEach(asset => asset.imagePreviewUrl = asset.previewUrl.replace(new RegExp(/\{width\}$/g), 319));
         var coralItems = '';
     for (var i = 0; i < frontifyAssets.length; i++) {
         coralItems += '<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">' +
@@ -37,7 +37,7 @@ function renderAssets(frontifyAssets) {
             '&quot;./imageRotate@Delete&quot;:&quot;&quot;,'  +
             '&quot;./alt&quot;:&quot;' + getAltText(frontifyAssets[i]) + '&quot;,'  +
             '&quot;./title&quot;:&quot;' + frontifyAssets[i].title + '&quot;}" '  +
-            '                    data-path=' + frontifyAssets[i].generic_url + ' data-asset-group="ffymedia"' +
+            '                    data-path=' + frontifyAssets[i].previewUrl + ' data-asset-group="ffymedia"' +
             '                    data-type="Images"' +
             '                    data-asset-mimetype="image/jpeg">' +
             '            <coral-card-asset>' +
@@ -71,9 +71,9 @@ function renderAssets(frontifyAssets) {
 function cleanUpDataAssets(data) {
     const cleanAssets = data.filter(function(element, index) {
         if (element != null && element != undefined) {
-          if(element.hasOwnProperty("generic_url"))  {
-            return element;
-          }
+            if (element.hasOwnProperty("previewUrl")) {
+                return element;
+            }
         }
 
     });
@@ -106,21 +106,21 @@ async function handleUpdateAssetList(endpoint, domain) {
       ... on MediaLibrary {
         id
         name
-        asset_count
+        assetCount
         assets(page: $page,  query: {search: $term, type: [IMAGE]}) {
           total
           page
           limit
-          has_next_page
+          hasNextPage
           items {
             ... on Image {
               title
               description
               size
               extension
-              generic_url
+              previewUrl
               width
-              height   
+              height
             }
           }
         }
@@ -158,7 +158,7 @@ async function handleUpdateAssetList(endpoint, domain) {
 
     try {
         data = await graphQLClient.request(queryParsed);
-        hasNextPage = data.project.assets.has_next_page;
+        hasNextPage = data.project.assets.hasNextPage;
         noPages = Math.ceil(data.project.assets.total/data.project.assets.limit)
     } catch (error) {
         $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
