@@ -3,6 +3,7 @@ package com.frontify.core.models;
 
 import com.frontify.core.util.LinkUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
@@ -48,21 +49,25 @@ public class FrontifyImage {
     }
 
     private String getHeight() {
-        return height == null || height.equals("0") ? "auto" : height;
+        return String.valueOf(NumberUtils.toInt(height));
+    }
+
+    //leave height attribute out if it is not needed (auto height)
+    private void appendHeightAttribute(String height, StringBuilder builder) {
+        if (!StringUtils.isEmpty(height) && !"0".equals(height)) {
+            builder.append("&height=").append(height);
+        }
     }
 
     public String getFileReference() {
-        if(fileReference != null){
+        if (fileReference != null) {
             String height = getHeight();
-            String fileRefecenceParsed = this.fileReference.replaceAll("\\{width\\}", width).replaceAll("\\{height\\}", height);
-            StringBuilder builder = new StringBuilder(fileRefecenceParsed);
-            if (!StringUtils.isAllEmpty(height) && !"0".equals(height)) {
-                builder.append("&height=").append(height);
-            }
+            //not sure how height works in fileReferences, so keep the string replacement in
+            String fileReferenceParsed = this.fileReference.replaceAll("\\{width\\}", width).replaceAll("\\{height\\}", height);
+            StringBuilder builder = new StringBuilder(fileReferenceParsed);
+            appendHeightAttribute(height, builder);
             return builder.toString();
         }
-       return StringUtils.EMPTY;
+        return StringUtils.EMPTY;
     }
-
-
 }
