@@ -19,7 +19,7 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
                 ...on MediaLibrary {
                 id,
                 name,
-                asset_count
+                assetCount
             }
             }
         }
