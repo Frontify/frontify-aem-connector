@@ -2,6 +2,7 @@
 <workspaceFilter version="1.0">
     <filter root="/apps/frontify-aem-connector"/>
     <filter root="/apps/wcm" mode="merge"/>
+    <filter root="/apps/cq" mode="merge"/>
     <filter root="/content/dam/frontify-aem-connector" mode="merge"/>
     <filter root="/etc/cloudservices/ffyconfig" mode="merge"/>
 </workspaceFilter>
