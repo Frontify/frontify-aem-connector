@@ -36,6 +36,9 @@ public class FrontifyImage {
     @ValueMapValue
     private String height;
 
+    @ValueMapValue
+    private String focalPoint;
+
     public String getAlt() {
         return alt;
     }
@@ -59,13 +62,22 @@ public class FrontifyImage {
         }
     }
 
+    private void appendFocalPointAttribute(String focalPoint, StringBuilder builder) {
+        if (!StringUtils.isEmpty(focalPoint)) {
+            builder.append("&fp=").append(focalPoint);
+        }
+    }
+
     public String getFileReference() {
         if (fileReference != null) {
             String height = getHeight();
             //not sure how height works in fileReferences, so keep the string replacement in
-            String fileReferenceParsed = this.fileReference.replaceAll("\\{width\\}", width).replaceAll("\\{height\\}", height);
+            String fileReferenceParsed = this.fileReference
+                    .replaceAll("\\{width\\}", width)
+                    .replaceAll("\\{height\\}", height);
             StringBuilder builder = new StringBuilder(fileReferenceParsed);
             appendHeightAttribute(height, builder);
+            appendFocalPointAttribute(focalPoint, builder);
             return builder.toString();
         }
         return StringUtils.EMPTY;
