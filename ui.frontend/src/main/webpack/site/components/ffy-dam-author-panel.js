@@ -29,14 +29,17 @@ function renderAssets(frontifyAssets) {
     frontifyAssets.forEach(asset => asset.imagePreviewUrl = asset.previewUrl.replace(new RegExp(/\{width\}$/g), 319));
         var coralItems = '';
     for (var i = 0; i < frontifyAssets.length; i++) {
+        const focalPoint = frontifyAssets[i].focalPoint === null ? "" :  frontifyAssets[i].focalPoint;
         coralItems += '<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">' +
             '        <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"' +
             '                    data-param="{' +
             '&quot;./imageMap@Delete&quot;:&quot;&quot;,' +
             '&quot;./imageCrop@Delete&quot;:&quot;&quot;,' +
             '&quot;./imageRotate@Delete&quot;:&quot;&quot;,'  +
+            '&quot;./focalPoint@Delete&quot;:&quot;&quot;,'  +
             '&quot;./alt&quot;:&quot;' + getAltText(frontifyAssets[i]) + '&quot;,'  +
-            '&quot;./title&quot;:&quot;' + frontifyAssets[i].title + '&quot;}" '  +
+            '&quot;./title&quot;:&quot;' + frontifyAssets[i].title + '&quot;, '  +
+            '&quot;./focalPoint&quot;:&quot;' + focalPoint + '&quot;}" '  +
             '                    data-path=' + frontifyAssets[i].previewUrl + ' data-asset-group="ffymedia"' +
             '                    data-type="Images"' +
             '                    data-asset-mimetype="image/jpeg">' +
@@ -121,6 +124,7 @@ async function handleUpdateAssetList(endpoint, domain) {
               previewUrl
               width
               height
+              focalPoint
             }
           }
         }
