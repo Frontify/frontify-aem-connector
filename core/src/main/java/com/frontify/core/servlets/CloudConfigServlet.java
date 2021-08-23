@@ -62,27 +62,27 @@ public class CloudConfigServlet extends SlingSafeMethodsServlet {
         RequestParameter[] uriParameters = request.getRequestParameters(URI);
         if (uriParameters != null && uriParameters.length > 0) {
 
-            Resource res = resourceResolver.resolve(uriParameters[0].getString());
+            Resource resource = resourceResolver.resolve(uriParameters[0].getString());
 
-            if (ResourceUtil.isNonExistingResource(res)) {
+            if (ResourceUtil.isNonExistingResource(resource)) {
                 writer.println(ERROR_RESOURCE_NOT_FOUND);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
             //get cloud config if it's set on page
-            String[] cloudServices = new HierarchyNodeInheritanceValueMap(res)
+            String[] cloudServices = new HierarchyNodeInheritanceValueMap(resource)
                     .getInherited(PN_CLOUD_SERVICE_CONFIGS, new String[]{});
 
             //get cloud config if it's set on folder
             if (cloudServices == null || cloudServices.length == 0) {
-                cloudServices = new ComponentInheritanceValueMap(res)
+                cloudServices = new ComponentInheritanceValueMap(resource)
                     .getInherited(PN_CLOUD_SERVICE_CONFIGS, new String[]{});
             }
 
             log.debug("uri: {}", uriParameters[0]);
-            log.debug("res: {}", res.getPath());
-            log.debug("nb srv: {}", cloudServices.length);
+            log.debug("resource: {}", resource.getPath());
+            log.debug("number of cloudServices: {}", cloudServices.length);
 
             ConfigurationManager configurationManager = resourceResolver.adaptTo(ConfigurationManager.class);
             if (configurationManager != null) {
