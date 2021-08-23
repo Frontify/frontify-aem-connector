@@ -1,9 +1,20 @@
 package com.frontify.core.servlets;
 
+import static com.adobe.cq.xf.ExperienceFragmentsConstants.PN_CLOUD_SERVICE_CONFIGS;
+import static org.apache.sling.jcr.contentloader.ContentTypeUtil.TYPE_JSON;
+
+import com.day.cq.commons.inherit.ComponentInheritanceValueMap;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.wcm.webservicesupport.Configuration;
 import com.day.cq.wcm.webservicesupport.ConfigurationManager;
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.Servlet;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -16,94 +27,101 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.servlets.annotations.SlingServletPaths;
 import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.servlet.Servlet;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
+@Slf4j
 @Component(service = { Servlet.class })
 @SlingServletPaths({"/bin/ffyconfig"})
 @SlingServletResourceTypes(resourceTypes = "sling/unused", methods = HttpConstants.METHOD_GET)
 public class CloudConfigServlet extends SlingSafeMethodsServlet {
-    private final transient Logger log = LoggerFactory.getLogger(getClass());
+
+    public static final String URI = "uri";
+    public static final String DOMAIN = "domain";
+    public static final String END_POINT = "endPoint";
+    public static final String ERROR_NO_URI_PROVIDED = "{\"error\": \"no uri provided\"}";
+    public static final String ERROR_NO_CONFIGURATION_FOUND = "{\"error\": \"no configuration found\"}";
+    public static final String ERROR_END_POINT_NOT_CONFIGURED = "{\"error\": \"endPoint not configured\"}";
+    public static final String ERROR_RESOURCE_NOT_FOUND = "{\"error\": \"resource not found\"}";
+    public static final String ERROR_DOMAIN_NOT_CONFIGURED = "{\"error\": \"domain not configured\"}";
 
     @Override
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse response) throws IOException {
 
-        response.setContentType("application/json");
-        PrintWriter wri = response.getWriter();
+        response.setContentType(TYPE_JSON);
+        PrintWriter writer = response.getWriter();
 
-        Map parameters = request.getParameterMap();
-        if (!parameters.containsKey("uri")) {
-            wri.println("{\"error\": \"no uri provided\"}");
-            response.setStatus(SlingHttpServletResponse.SC_BAD_REQUEST);
+        Map<String, String[]> parameters = request.getParameterMap();
+        if (!parameters.containsKey(URI)) {
+            writer.println(ERROR_NO_URI_PROVIDED);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         ResourceResolver resourceResolver = request.getResourceResolver();
 
-        RequestParameter[] uriParameters = request.getRequestParameters("uri");
+        RequestParameter[] uriParameters = request.getRequestParameters(URI);
         if (uriParameters != null && uriParameters.length > 0) {
 
             Resource res = resourceResolver.resolve(uriParameters[0].getString());
 
             if (ResourceUtil.isNonExistingResource(res)) {
-                wri.println("{\"error\": \"resource not found\"}");
-                response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
+                writer.println(ERROR_RESOURCE_NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
-            //get page properties
-            String[] services = new HierarchyNodeInheritanceValueMap(res)
-                    .getInherited("cq:cloudserviceconfigs", new String[]{});
+            //get cloud config if it's set on page
+            String[] cloudServices = new HierarchyNodeInheritanceValueMap(res)
+                    .getInherited(PN_CLOUD_SERVICE_CONFIGS, new String[]{});
 
-            log.debug("uri: {0}", uriParameters[0]);
-            log.debug("res: {0}", res.getPath());
-            log.debug("nb srv: {0}", services.length);
+            //get cloud config if it's set on folder
+            if (cloudServices == null || cloudServices.length == 0) {
+                cloudServices = new ComponentInheritanceValueMap(res)
+                    .getInherited(PN_CLOUD_SERVICE_CONFIGS, new String[]{});
+            }
 
-            ConfigurationManager cfgMgr = resourceResolver.adaptTo(ConfigurationManager.class);
-            if (cfgMgr != null) {
+            log.debug("uri: {}", uriParameters[0]);
+            log.debug("res: {}", res.getPath());
+            log.debug("nb srv: {}", cloudServices.length);
 
-                Configuration cfg = cfgMgr.getConfiguration("ffyconfig", services);
+            ConfigurationManager configurationManager = resourceResolver.adaptTo(ConfigurationManager.class);
+            if (configurationManager != null) {
 
-                Map<String, Object> config = new HashMap<>();
+                Configuration configuration = configurationManager.getConfiguration("ffyconfig", cloudServices);
 
-                if (cfg != null) {
+                Map<String, Object> configMap = new HashMap<>();
 
-                    String endPoint = cfg.get("endPoint", "");
-                    String domain = cfg.get("domain", "");
+                if (configuration != null) {
+
+                    String endPoint = configuration.get(END_POINT, "");
+                    String domain = configuration.get(DOMAIN, "");
 
                     if (StringUtils.isEmpty(endPoint)) {
-                        wri.println("{\"error\": \"endPoint not configured\"}");
-                        response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
+                        writer.println(ERROR_END_POINT_NOT_CONFIGURED);
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         return;
                     }
 
-                    config.put("domain", domain);
+                    configMap.put(DOMAIN, domain);
                     if (StringUtils.isEmpty(domain)) {
-                        wri.println("{\"error\": \"domain not configured\"}");
-                        response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
+                        writer.println(ERROR_DOMAIN_NOT_CONFIGURED);
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         return;
                     }
 
-                    config.put("endPoint", endPoint);
-                    config.put("domain", domain);
+                    configMap.put(END_POINT, endPoint);
+                    configMap.put(DOMAIN, domain);
 
                 } else {
-                    wri.println("{\"error\": \"no configuration found\"}");
-                    response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
+                    writer.println(ERROR_NO_CONFIGURATION_FOUND);
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
 
                 Gson gson = new Gson();
-                wri.println(gson.toJson(config));
+                writer.println(gson.toJson(configMap));
             } else {
-                wri.println("{\"error\": \"no configuration found\"}");
-                response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
+                writer.println(ERROR_NO_CONFIGURATION_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }
