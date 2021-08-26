@@ -70,13 +70,13 @@ public class FrontifyImage {
 
     public String getFileReference() {
         if (fileReference != null) {
-            String height = getHeight();
+            String definedHeight = getHeight();
             //not sure how height works in fileReferences, so keep the string replacement in
             String fileReferenceParsed = this.fileReference
-                    .replaceAll("\\{width\\}", width)
-                    .replaceAll("\\{height\\}", height);
+                    .replace("{width}", width)
+                    .replace("{height}", definedHeight);
             StringBuilder builder = new StringBuilder(fileReferenceParsed);
-            appendHeightAttribute(height, builder);
+            appendHeightAttribute(definedHeight, builder);
             appendFocalPointAttribute(focalPoint, builder);
             return builder.toString();
         }
