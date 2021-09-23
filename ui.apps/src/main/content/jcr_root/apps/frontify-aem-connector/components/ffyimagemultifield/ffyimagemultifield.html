@@ -1,0 +1,9 @@
+<sly data-sly-use.model="com.frontify.core.models.FrontifyImageMultifield"></sly>
+<sly data-sly-test="${model.images}" data-sly-list.image="${model.images}">
+        <img data-sly-test="${image.fileReference}"
+             src="${image.fileReference @ context='unsafe'}"
+             title="${image.title}"
+             data-ffy-focalpoint="${image.focalPoint}"/>
+</sly>
+
+<div data-sly-test="${(wcmmode.edit || wcmmode.preview) && !model.images}" class="cq-placeholder cmp-image cq-dd-image" data-emptytext="Frontify Multifield image"></div>
