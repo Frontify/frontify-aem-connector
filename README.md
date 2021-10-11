@@ -68,3 +68,45 @@ A ClientLib will consist of the following files and directories:
 * `css.txt` (tells AEM the order and names of files in `css/` so they can be merged)
 * `js/`: JavaScript files which can be requested in the HTML
 * `js.txt` (tells AEM the order and names of files in `js/` so they can be merged
+
+### Image in Multifield support
+
+Instruction on how enable drag and drop images from Frontify image panel to a multified dialog:
+
+In your custom component dialog use the resource type frontify-aem-connector/components/fileupload
+
+Example:
+
+                                                <images
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                                composite="{Boolean}true"
+                                                deleteHint="{Boolean}false">
+                                                <field
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                    name="./images">
+                                                    <items jcr:primaryType="nt:unstructured">
+                                                        <file
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="frontify-aem-connector/components/fileupload"
+                                                            allowUpload="false"
+                                                            autoStart="{Boolean}false"
+                                                            class="cq-droptarget"
+                                                            fileNameParameter="./fileName"
+                                                            fileReferenceParameter="./fileReference"
+                                                            multiple="{Boolean}false"
+                                                            name="./file"
+                                                            title="Upload Image Asset"
+                                                            uploadUrl="${suffix.path}"
+                                                            useHTML5="{Boolean}true"/>
+                                                    </items>
+                                                </field>
+                                            </images>
+
+The properties will be automatically fetch from Frontify:
+- title
+- focalPoint
+- alt
+
+Note: It also supports the standard image from AEM.

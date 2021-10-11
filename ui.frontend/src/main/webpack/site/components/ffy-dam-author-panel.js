@@ -27,40 +27,39 @@ function getAltText(asset) {
 function renderAssets(frontifyAssets) {
 
     frontifyAssets.forEach(asset => asset.imagePreviewUrl = asset.previewUrl.replace(new RegExp(/\{width\}$/g), 319));
-        var coralItems = '';
-    for (var i = 0; i < frontifyAssets.length; i++) {
-        const focalPoint = frontifyAssets[i].focalPoint === null ? "" :  frontifyAssets[i].focalPoint;
-        coralItems += '<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">' +
-            '        <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"' +
-            '                    data-param="{' +
-            '&quot;./imageMap@Delete&quot;:&quot;&quot;,' +
-            '&quot;./imageCrop@Delete&quot;:&quot;&quot;,' +
-            '&quot;./imageRotate@Delete&quot;:&quot;&quot;,'  +
-            '&quot;./focalPoint@Delete&quot;:&quot;&quot;,'  +
-            '&quot;./alt&quot;:&quot;' + getAltText(frontifyAssets[i]) + '&quot;,'  +
-            '&quot;./title&quot;:&quot;' + frontifyAssets[i].title + '&quot;, '  +
-            '&quot;./focalPoint&quot;:&quot;' + focalPoint + '&quot;}" '  +
-            '                    data-path=' + frontifyAssets[i].previewUrl + ' data-asset-group="ffymedia"' +
-            '                    data-type="Images"' +
-            '                    data-asset-mimetype="image/jpeg">' +
-            '            <coral-card-asset>' +
-            '                <img class="cq-dd-image"' +
-            '                     src=' +  frontifyAssets[i].imagePreviewUrl +
-            '                     alt="frontifyImage">' +
-            '            </coral-card-asset>' +
-            '            <div class="coral3-Card-wrapper">' +
-            '                <coral-card-content>' +
-            '                    <coral-card-title class="foundation-collection-item-title coral3-Card-title" title="frontifyImage">' + frontifyAssets[i].title + '</coral-card-title>'  +
-            //            '                    <coral-icon class="editor-Card-viewInAdmin coral3-Icon coral3-Icon--edit coral3-Icon--sizeXS" icon="edit" size="XS" title="Edit" role="img" aria-label="Edit"></coral-icon>' +
-            '                    <coral-card-propertylist>' +
-            '                        <coral-card-property class="coral3-Card-property">' +
-            '                            <coral-card-property-content>' + frontifyAssets[i].width + ' x ' + frontifyAssets[i].height + ' | ' + frontifyAssets[i].size/1024 + ' KB</coral-card-property-content>' +
-            '                        </coral-card-property>' +
-            '                    </coral-card-propertylist>' +
-            '                </coral-card-content>' +
-            '            </div>' +
-            '        </coral-card>' +
-            '    </coral-masonry-item>';
+        var coralItems = ``;
+    for (const frontifyAsset of frontifyAssets) {
+        const focalPoint = frontifyAsset.focalPoint === null ? "" :  frontifyAsset.focalPoint;
+        coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
+                    <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"
+                                data-param="{
+            &quot;./imageMap@Delete&quot;:&quot;&quot;,
+            &quot;./imageCrop@Delete&quot;:&quot;&quot;,
+            &quot;./imageRotate@Delete&quot;:&quot;&quot;,
+            &quot;./focalPoint@Delete&quot;:&quot;&quot;,
+            &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
+            &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
+            &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
+                                data-path=${frontifyAsset.previewUrl} data-asset-group="ffymedia"
+                                data-type="Images"
+                                data-asset-mimetype="image/jpeg">
+                        <coral-card-asset>
+                            <img class="cq-dd-image"
+                                 src=${frontifyAsset.imagePreviewUrl}
+                                 alt="frontifyImage">
+                        </coral-card-asset>
+                        <div class="coral3-Card-wrapper">
+                            <coral-card-content>
+                                <coral-card-title class="foundation-collection-item-title coral3-Card-title" title="frontifyImage">${frontifyAsset.title}</coral-card-title>
+                                <coral-card-propertylist>
+                                    <coral-card-property class="coral3-Card-property">
+                                        <coral-card-property-content>${frontifyAsset.width} x ${frontifyAsset.height} | ${frontifyAsset.size/1024} KB</coral-card-property-content>
+                                    </coral-card-property>
+                                </coral-card-propertylist>
+                            </coral-card-content>
+                        </div>
+                    </coral-card>
+                </coral-masonry-item>`;
     }
     var coralMasonry = '<coral-masonry class="coral3-Masonry is-loaded" layout="variable">' + coralItems + '</coral-masonry>';
     $('.frontifyfinder').html(coralMasonry);
@@ -72,15 +71,12 @@ function renderAssets(frontifyAssets) {
 }
 
 function cleanUpDataAssets(data) {
-    const cleanAssets = data.filter(function(element, index) {
-        if (element != null && element != undefined) {
-            if (element.hasOwnProperty("previewUrl")) {
-                return element;
-            }
+    return  data.filter(function(element, index) {
+        if (element !== null && element !== undefined && element.hasOwnProperty("previewUrl")) {
+            return element;
         }
 
     });
-    return cleanAssets;
 }
 
 
@@ -163,7 +159,7 @@ async function handleUpdateAssetList(endpoint, domain) {
     try {
         data = await graphQLClient.request(queryParsed);
         hasNextPage = data.project.assets.hasNextPage;
-        noPages = Math.ceil(data.project.assets.total/data.project.assets.limit)
+        noPages = Math.ceil(data.project.assets.total/data.project.assets.limit);
     } catch (error) {
         $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
     }
