@@ -6,6 +6,7 @@ export async function handleUpdateLibrariesList(endpoint, domain, callback) {
         headers: {
             'Content-Type': 'application/json',
             'accept': 'application/json',
+            'x-frontify-beta': 'enabled',
             authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token'),
         },
     });

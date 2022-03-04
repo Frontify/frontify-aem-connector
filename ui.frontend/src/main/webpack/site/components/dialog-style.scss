@@ -89,6 +89,11 @@
   display: none;
 }
 
+.frontify-type-file {
+  width: 50% !important;
+  padding: 1.5rem;
+}
+
 @media screen and (min-width: 1025px) {
   .sidepanel .frontify-content-panel.content-panel.editor-SidePanel-results {
     max-height: 85vh;
