@@ -1,12 +1,13 @@
 import { GraphQLClient  } from 'graphql-request';
-import { handleUpdateCategoriesList } from './ffy-filter.js';
+import { handleUpdateLibrariesList } from './ffy-filter.js';
 
 var hasNextPage = false;
 var noPages = 0;
 var pageNumber = 1;
 var scrollTriggered = false;
 var frontifyAssets = null;
-var selectedCategory = "";
+var selectedLibrary = "";
+var selectedType = "";
 
 function resetGlobals() {
     hasNextPage = false;
@@ -53,7 +54,7 @@ function renderAssets(frontifyAssets) {
                                 <coral-card-title class="foundation-collection-item-title coral3-Card-title" title="frontifyImage">${frontifyAsset.title}</coral-card-title>
                                 <coral-card-propertylist>
                                     <coral-card-property class="coral3-Card-property">
-                                        <coral-card-property-content>${frontifyAsset.width} x ${frontifyAsset.height} | ${frontifyAsset.size/1024} KB</coral-card-property-content>
+                                        <coral-card-property-content>${frontifyAsset.width} x ${frontifyAsset.height} | ${frontifyAsset.size/1024} KB | ${frontifyAsset.extension}</coral-card-property-content>
                                     </coral-card-property>
                                 </coral-card-propertylist>
                             </coral-card-content>
@@ -101,12 +102,12 @@ async function handleUpdateAssetList(endpoint, domain) {
         }
       }
     }
-    project(id: "$category") {
+    project(id: "$library") {
       ... on MediaLibrary {
         id
         name
         assetCount
-        assets(page: $page,  query: {search: $term, type: [IMAGE]}) {
+        assets(page: $page,  query: {search: $term, type: [$asset_type]}) {
           total
           page
           limit
@@ -121,6 +122,43 @@ async function handleUpdateAssetList(endpoint, domain) {
               width
               height
               focalPoint
+              __typename
+            }
+            ... on Video {
+              title
+              description
+              size
+              extension
+              previewUrl
+              downloadUrl
+              __typename
+            }
+            ... on Document {
+              title
+              description
+              size
+              extension
+              previewUrl
+              downloadUrl
+              __typename
+            }
+            ... on Audio {
+              title
+              description
+              size
+              extension
+              previewUrl
+              downloadUrl
+              __typename
+            }
+            ... on File {
+              title
+              description
+              size
+              extension
+              previewUrl
+              downloadUrl
+              __typename
             }
           }
         }
@@ -128,24 +166,31 @@ async function handleUpdateAssetList(endpoint, domain) {
     }
   }
   `;
+
     var queryParsed = query;
-    var categoriesListSelected = $("input[name=frontifyfilter_type_selector]").val();
-    if(selectedCategory !== categoriesListSelected){
-        selectedCategory = categoriesListSelected;
+    var librariesListSelected = $("input[name=frontifyfilter_library_selector]").val();
+    if(selectedLibrary !== librariesListSelected){
+        selectedLibrary = librariesListSelected;
         resetGlobals();
     }
 
-    if (categoriesListSelected !== null || categoriesListSelected !== undefined) {
+  var typesListSelected = $("input[name=frontifyfilter_type_selector]").val();
+  if(selectedType !== typesListSelected){
+    selectedType = typesListSelected;
+    resetGlobals();
+  }
+
+    if ((librariesListSelected !== null || librariesListSelected !== undefined) && (typesListSelected !== null || typesListSelected !== undefined)) {
         if(pageNumber === noPages){
             return;
         }
         if(hasNextPage && pageNumber < noPages){
             $(".resultspinner").show();
             pageNumber +=1;
-            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber); // check
+            queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected); // check
             scrollTriggered = true;
         } else {
-            queryParsed = queryParsed.replace(new RegExp(/\$category/g), categoriesListSelected).replace(new RegExp(/\$page/g), pageNumber); // check
+            queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected); // check
 
         }
     } else {
@@ -156,7 +201,7 @@ async function handleUpdateAssetList(endpoint, domain) {
     queryParsed = queryParsed.replace(new RegExp(/\$term/g), queryTerm);
     var data;
 
-    try {
+  try {
         data = await graphQLClient.request(queryParsed);
         hasNextPage = data.project.assets.hasNextPage;
         noPages = Math.ceil(data.project.assets.total/data.project.assets.limit);
@@ -194,7 +239,7 @@ export function obtainCloudConfiguration () {
         success: function(data){
             const endpoint = data.endPoint;
             const domain = data.domain;
-            handleUpdateCategoriesList(endpoint, domain, handleUpdateAssetList);
+            handleUpdateLibrariesList(endpoint, domain, handleUpdateAssetList);
         },
         error: function(){
             $('.frontify-login-panel').hide();
@@ -239,16 +284,22 @@ if( localStorage.FrontifyAuthenticator_token ) {
 
 }
 
-$("#frontifyfilter_type_selector").on("change", function (event) {
+$("#frontifyfilter_library_selector").on("change", function (event) {
     if ( typeof( event.isTrigger ) === 'undefined' ) {
-        sessionStorage.setItem("ffy.chosenCategory", $("input[name=frontifyfilter_type_selector]").val());
+        sessionStorage.setItem("ffy.chosenLibrary", $("input[name=frontifyfilter_library_selector]").val());
         obtainCloudConfiguration();
     }
 });
 
+$("#frontifyfilter_type_selector").on("change", function (event) {
+  if ( typeof( event.isTrigger ) === 'undefined' ) {
+    obtainCloudConfiguration();
+  }
+});
+
 $("#frontifysearch").on("change", function (event) {
     //save chosen option
-    sessionStorage.setItem("ffy.chosenCategory", $("input[name=frontifyfilter_type_selector]").val());
+    sessionStorage.setItem("ffy.chosenLibrary", $("input[name=frontifyfilter_library_selector]").val());
     resetGlobals();
     obtainCloudConfiguration();
 });
