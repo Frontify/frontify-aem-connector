@@ -99,10 +99,13 @@ function renderAssets(frontifyAssets) {
       coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
                     <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"
                                 data-param="{
+            &quot;./imageMap@Delete&quot;:&quot;&quot;,
+            &quot;./imageCrop@Delete&quot;:&quot;&quot;,
+            &quot;./imageRotate@Delete&quot;:&quot;&quot;,
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
-            &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
-            &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
-                                data-path=${imagePreview} data-asset-group="ffymedia"
+            &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;,
+            &quot;./extension&quot;:&quot;${frontifyAsset.extension}&quot;}"
+                                data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
                                 data-asset-mimetype="application/${frontifyAsset.extension}">
                         <coral-card-asset>
