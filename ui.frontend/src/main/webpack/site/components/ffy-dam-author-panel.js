@@ -32,7 +32,7 @@ function renderAssets(frontifyAssets) {
   for (const frontifyAsset of frontifyAssets) {
     const focalPoint = frontifyAsset.focalPoint === null ? "" : frontifyAsset.focalPoint;
     const typename = frontifyAsset.__typename.toLowerCase();
-    if (typename === "image" || typename === "video") {
+    if (typename === "image") {
       coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
                     <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"
                                 data-param="{
@@ -43,7 +43,35 @@ function renderAssets(frontifyAssets) {
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
             &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
-                                data-path=${frontifyAsset.previewUrl} data-asset-group="ffymedia"
+                                data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
+                                data-type="Images"
+                                data-asset-mimetype="${typename}/${frontifyAsset.extension}">
+                        <coral-card-asset>
+                            <img class="cq-dd-image"
+                                 src=${frontifyAsset.imagePreviewUrl}
+                                 alt="frontifyImage">
+                        </coral-card-asset>
+                        <div class="coral3-Card-wrapper">
+                            <coral-card-content>
+                                <coral-card-title class="foundation-collection-item-title coral3-Card-title" title="frontifyImage">${frontifyAsset.title}</coral-card-title>
+                                <coral-card-propertylist>
+                                    <coral-card-property class="coral3-Card-property">
+                                        <coral-card-property-content>${frontifyAsset.width} x ${frontifyAsset.height} | ${frontifyAsset.size / 1024} KB | ${frontifyAsset.extension}</coral-card-property-content>
+                                    </coral-card-property>
+                                </coral-card-propertylist>
+                            </coral-card-content>
+                        </div>
+                    </coral-card>
+                </coral-masonry-item>`;
+    } else if (typename === "video") {
+      coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
+                    <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"
+                                data-param="{
+            &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
+            &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
+            &quot;./previewUrl&quot;:&quot;${frontifyAsset.previewUrl}&quot;, 
+            &quot;./extension&quot;:&quot;${frontifyAsset.extension}&quot;}"
+                                data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
                                 data-asset-mimetype="${typename}/${frontifyAsset.extension}">
                         <coral-card-asset>
@@ -152,6 +180,7 @@ async function handleUpdateAssetList(endpoint, domain) {
             ... on Image {
               size
               extension
+              downloadUrl
               previewUrl
               width
               height

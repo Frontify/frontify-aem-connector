@@ -1,4 +1,4 @@
-package com.frontify.core.models;
+package com.frontify.core.models.image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,5 @@ public class FrontifyImageMultifield {
         images.add(imageMultiField);
       }
     }
-
   }
-
 }

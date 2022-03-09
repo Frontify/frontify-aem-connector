@@ -1,4 +1,4 @@
-<sly data-sly-use.model="com.frontify.core.models.FrontifyImageMultifield"></sly>
+<sly data-sly-use.model="com.frontify.core.models.image.FrontifyImageMultifield"></sly>
 <sly data-sly-test="${model.images}" data-sly-list.image="${model.images}">
         <img data-sly-test="${image.fileReference}"
              src="${image.fileReference @ context='unsafe'}"

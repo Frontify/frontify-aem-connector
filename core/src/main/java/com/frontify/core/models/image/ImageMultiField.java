@@ -1,4 +1,4 @@
-package com.frontify.core.models;
+package com.frontify.core.models.image;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,4 @@ public class ImageMultiField {
   private String focalPoint;
 
   private String title;
-
-
-
 }
