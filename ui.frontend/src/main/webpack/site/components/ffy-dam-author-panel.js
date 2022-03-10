@@ -42,6 +42,8 @@ function renderAssets(frontifyAssets) {
             &quot;./focalPoint@Delete&quot;:&quot;&quot;,
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
+            &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
+            &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
                                 data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
@@ -69,7 +71,9 @@ function renderAssets(frontifyAssets) {
                                 data-param="{
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
-            &quot;./previewUrl&quot;:&quot;${frontifyAsset.previewUrl}&quot;, 
+            &quot;./previewUrl&quot;:&quot;${frontifyAsset.previewUrl}&quot;,
+            &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
+            &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./extension&quot;:&quot;${frontifyAsset.extension}&quot;}"
                                 data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
@@ -106,7 +110,9 @@ function renderAssets(frontifyAssets) {
             &quot;./imageRotate@Delete&quot;:&quot;&quot;,
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;,
-            &quot;./size&quot;:&quot;${frontifyAsset.size/1024} KB&quot;,
+            &quot;./size&quot;:&quot;${frontifyAsset.size / 1024} KB&quot;,
+            &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
+            &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./extension&quot;:&quot;${mimetype}/${frontifyAsset.extension}&quot;}"
                                 data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
@@ -160,69 +166,82 @@ async function handleUpdateAssetList(endpoint, domain) {
 
   const query = /* GraphQL */ `
   {
-    brands {
-      id
-      projects {
-        __typename
-        ... on MediaLibrary {
-          id
-        }
-      }
-    }
-    project(id: "$library") {
+  brands {
+    id
+    projects {
+      __typename
       ... on Library {
         id
-        name
-        assetCount
-        assets(page: $page,  query: {search: $term, type: [$asset_type]}) {
-          total
-          page
-          limit
-          hasNextPage
-          items {
-            title
-            description
-            __typename
-            ... on Image {
-              size
-              extension
-              downloadUrl
-              previewUrl
-              width
-              height
-              focalPoint
-            }
-            ... on Video {
-              size
-              extension
-              previewUrl
-              width
-              height
-              downloadUrl(permanent: true)
-            }
-            ... on Document {
-              size
-              extension
-              previewUrl
-              downloadUrl(permanent: true)
-            }
-            ... on Audio {
-              size
-              extension
-              previewUrl
-              downloadUrl(permanent: true)
-            }
-            ... on File {
-              size
-              extension
-              previewUrl
-              downloadUrl(permanent: true)
-            }
-          }
-        }
       }
     }
   }
+  project: library(id: "$library") {
+    id
+    name
+    assetCount
+    assets(page: 1, query: {search: "", type: [$asset_type]}) {
+      total
+      page
+      limit
+      hasNextPage
+      items {
+        ...onAsset
+        ...onImage
+        ...onDocument
+        ...onVideo
+        ...onFile
+        ...onAudio
+      }
+    }
+  }
+}
+
+fragment onAsset on Asset {
+  id
+  title
+  description
+  __typename
+}
+
+fragment onImage on Image {
+  size
+  extension
+  downloadUrl(permanent: true)
+  previewUrl
+  width
+  height
+  focalPoint
+}
+
+fragment onDocument on Document {
+  size
+  extension
+  previewUrl
+  downloadUrl(permanent: true)
+}
+
+fragment onVideo on Video {
+  size
+  extension
+  previewUrl
+  width
+  height
+  downloadUrl(permanent: true)
+}
+
+fragment onAudio on Audio {
+  size
+  extension
+  previewUrl
+  downloadUrl(permanent: true)
+}
+
+fragment onFile on File {
+  size
+  extension
+  previewUrl
+  downloadUrl(permanent: true)
+}
   `;
 
   var queryParsed = query;
