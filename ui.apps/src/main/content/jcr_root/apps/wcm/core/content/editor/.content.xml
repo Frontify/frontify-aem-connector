@@ -144,10 +144,14 @@
                                                 name="frontifyfilter_type_selector"
                                                 granite:id="frontifyfilter_type_selector">
                                                 <items jcr:primaryType="nt:unstructured">
+                                                    <all
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="All types"
+                                                        selected="{Boolean}true"
+                                                        value=""/>
                                                     <image
                                                         jcr:primaryType="nt:unstructured"
                                                         text="Image"
-                                                        selected="{Boolean}true"
                                                         value="IMAGE"/>
                                                     <video
                                                         jcr:primaryType="nt:unstructured"

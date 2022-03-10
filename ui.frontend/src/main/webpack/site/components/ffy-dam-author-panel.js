@@ -170,7 +170,7 @@ async function handleUpdateAssetList(endpoint, domain) {
       }
     }
     project(id: "$library") {
-      ... on MediaLibrary {
+      ... on Library {
         id
         name
         assetCount
