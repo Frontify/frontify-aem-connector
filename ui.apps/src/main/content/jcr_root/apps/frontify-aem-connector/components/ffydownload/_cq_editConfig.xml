@@ -10,7 +10,7 @@
     <cq:dropTargets jcr:primaryType="nt:unstructured">
         <ffyasset
             jcr:primaryType="cq:DropTargetConfig"
-            accept="[application/.*]"
+            accept="[application/.*,audio/.*]"
             groups="[ffymedia]"
             propertyName="./fileReference">
             <parameters

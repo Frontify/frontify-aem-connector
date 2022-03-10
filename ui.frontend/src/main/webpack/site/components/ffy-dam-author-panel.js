@@ -93,8 +93,10 @@ function renderAssets(frontifyAssets) {
                 </coral-masonry-item>`;
     } else {
       var imagePreview = frontifyAsset.imagePreviewUrl;
+      var mimetype = "application";
       if (typename === "audio") {
         imagePreview += '&format=jpg';
+        mimetype = "audio";
       }
       coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
                     <coral-card class="editor-Card-asset card-asset cq-draggable u-coral-openHand coral3-Card" draggable="true"
@@ -104,10 +106,11 @@ function renderAssets(frontifyAssets) {
             &quot;./imageRotate@Delete&quot;:&quot;&quot;,
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;,
-            &quot;./extension&quot;:&quot;${frontifyAsset.extension}&quot;}"
+            &quot;./size&quot;:&quot;${frontifyAsset.size/1024} KB&quot;,
+            &quot;./extension&quot;:&quot;${mimetype}/${frontifyAsset.extension}&quot;}"
                                 data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
                                 data-type="Images"
-                                data-asset-mimetype="application/${frontifyAsset.extension}">
+                                data-asset-mimetype="${mimetype}/${frontifyAsset.extension}">
                         <coral-card-asset>
                             <img class="cq-dd-image frontify-type-${typename}"
                                  src=${imagePreview}
