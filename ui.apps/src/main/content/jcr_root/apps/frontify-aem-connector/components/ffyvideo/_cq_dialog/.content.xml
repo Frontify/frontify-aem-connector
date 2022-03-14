@@ -32,7 +32,7 @@
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="granite/ui/components/coral/foundation/tabs"
                     maximized="{Boolean}true">
-                <items jcr:primaryType="nt:unstructured" sling:hideChildren="[*]">
+                <items jcr:primaryType="nt:unstructured">
                     <frontify
                             jcr:primaryType="nt:unstructured"
                             jcr:title="Metadata"
