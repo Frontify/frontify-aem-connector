@@ -2,7 +2,7 @@
 
 <a data-sly-unwrap="${!image.hasLinkUrl}" href="${image.linkUrl}">
     <img data-sly-test="${image.fileReference}"
-         src="${image.fileReference @ context='unsafe'}"
+         src="${image.fileReference @ context='uri'}"
          title="${image.title}"
          alt="${image.alt}"/>
 </a>

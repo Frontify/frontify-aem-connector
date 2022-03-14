@@ -1,6 +1,6 @@
 <video data-sly-test="${properties.fileReference}" controls width="${properties.width}">
-    <source src="${properties.fileReference @ context='unsafe'}"
-            poster="${properties.previewUrl @ context='unsafe'}"
+    <source src="${properties.fileReference @ context='uri'}"
+            poster="${properties.previewUrl @ context='uri'}"
             type="video/${properties.extension}">
     Sorry, your browser doesn't support embedded videos.
 </video>
