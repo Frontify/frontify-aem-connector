@@ -1,4 +1,4 @@
-package com.frontify.core.models;
+package com.frontify.core.models.image;
 
 
 import com.frontify.core.util.LinkUtil;

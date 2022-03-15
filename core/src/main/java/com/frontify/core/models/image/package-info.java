@@ -14,6 +14,6 @@
  *  limitations under the License.
  */
 @Version("1.2.0")
-package com.frontify.core.models;
+package com.frontify.core.models.image;
 
 import org.osgi.annotation.versioning.Version;

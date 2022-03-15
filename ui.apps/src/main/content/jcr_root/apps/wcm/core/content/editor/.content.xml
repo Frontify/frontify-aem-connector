@@ -136,17 +136,51 @@
                                                         class="clearFrontifySearch"
                                                         variant="quiet"/>
                                             </fulltextsearch>
-                                            <assettype
+                                            <assetType
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                emptyText="Filter by asset type"
+                                                filterType="General"
+                                                name="frontifyfilter_type_selector"
+                                                granite:id="frontifyfilter_type_selector">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <all
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="All types"
+                                                        selected="{Boolean}true"
+                                                        value=""/>
+                                                    <image
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Image"
+                                                        value="IMAGE"/>
+                                                    <video
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Video"
+                                                        value="VIDEO"/>
+                                                    <document
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Document"
+                                                        value="DOCUMENT"/>
+                                                    <audio
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Audio"
+                                                        value="AUDIO"/>
+                                                    <file
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="File"
+                                                        value="FILE"/>
+                                                </items>
+                                            </assetType>
+                                            <library
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                    emptyText="Filter by category"
+                                                    emptyText="Filter by library"
                                                     filterType="General"
-                                                    name="frontifyfilter_type_selector"
-                                                    granite:id="frontifyfilter_type_selector"
-                                                    text="Images">
+                                                    name="frontifyfilter_library_selector"
+                                                    granite:id="frontifyfilter_library_selector">
                                                 <items jcr:primaryType="nt:unstructured">
                                                 </items>
-                                            </assettype>
+                                            </library>
                                             <filterResultPanel
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/foundation/container"
