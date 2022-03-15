@@ -6,7 +6,8 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
         headers: {
             'Content-Type': 'application/json',
             'accept': 'application/json',
-            authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token'),
+            'x-frontify-beta': 'enabled',
+            authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token')
         },
     });
 
