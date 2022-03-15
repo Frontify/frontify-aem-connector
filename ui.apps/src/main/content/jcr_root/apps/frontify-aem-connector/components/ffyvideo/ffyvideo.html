@@ -1,0 +1,8 @@
+<video data-sly-test="${properties.fileReference}" controls width="${properties.width}">
+    <source src="${properties.fileReference @ context='uri'}"
+            poster="${properties.previewUrl @ context='uri'}"
+            type="video/${properties.extension}">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+
+<div data-sly-test="${(wcmmode.edit || wcmmode.preview) && !properties.fileReference}" class="cq-placeholder cmp-image cq-dd-image" data-emptytext="Frontify video"></div>

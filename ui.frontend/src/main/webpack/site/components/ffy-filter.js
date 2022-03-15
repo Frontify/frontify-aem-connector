@@ -1,17 +1,17 @@
 import { GraphQLClient  } from 'graphql-request';
 
-export async function handleUpdateCategoriesList(endpoint, domain, callback) {
+export async function handleUpdateLibrariesList(endpoint, domain, callback) {
 
     const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
             'Content-Type': 'application/json',
             'accept': 'application/json',
             'x-frontify-beta': 'enabled',
-            authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token')
+            authorization: 'Bearer ' + localStorage.getItem('FrontifyAuthenticator_token'),
         },
     });
 
-    //Make call to categories
+    //Make call to fetch libraries
 
     const query = `{
         brands {
@@ -30,31 +30,31 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
     var data;
 
     //cache values
-    var localCategories = sessionStorage.getItem("ffy.categories");
-    if (localCategories == null || localCategories == undefined) {
+    var localLibraries = sessionStorage.getItem("ffy.libraries");
+    if (localLibraries == null || localLibraries == undefined) {
         try {
             data = await graphQLClient.request(query);
             } catch (error) {
             $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
         }
         if (data != null || data != undefined) {
-            sessionStorage.setItem("ffy.categories", JSON.stringify(data));
-            localCategories = JSON.stringify(data);
+            sessionStorage.setItem("ffy.libraries", JSON.stringify(data));
+            localLibraries = JSON.stringify(data);
         } else {
-            $(window).adaptTo("foundation-ui").alert("Error", "Error obtaining categories");
+            $(window).adaptTo("foundation-ui").alert("Error", "Error obtaining libraries");
         }
     }
 
-    if (localCategories != null && localCategories != undefined) {
-        var categoriesListSelectHidden = $("#frontifyfilter_type_selector");
+    if (localLibraries != null && localLibraries != undefined) {
+        var librariesListSelectHidden = $("#frontifyfilter_library_selector");
 
-    var entries = JSON.parse(localCategories).brands;
-    if ($("#frontifyfilter_type_selector coral-selectlist").children().length == 0 ) {
+    var entries = JSON.parse(localLibraries).brands;
+    if ($("#frontifyfilter_library_selector coral-selectlist").children().length == 0 ) {
         for (var brandIndex = 0; brandIndex < entries.length; brandIndex++ ) {
             var brand = entries[brandIndex];
             for (var i = 0; i < brand.projects.length; i++) {
                 var item = brand.projects[i];
-                categoriesListSelectHidden.append($('<coral-select-item>', {
+                librariesListSelectHidden.append($('<coral-select-item>', {
                     value: item.id,
                     text: brand.name + ' -  ' + item.name
                 }));
@@ -62,14 +62,14 @@ export async function handleUpdateCategoriesList(endpoint, domain, callback) {
         }
     }
 
-        if (sessionStorage.getItem("ffy.chosenCategory") != null) {
-            var selectedValue = sessionStorage.getItem("ffy.chosenCategory");
-            $("#frontifyfilter_type_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenCategory") + "']").attr('selected', 'selected');
-            $("#frontifyfilter_type_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenCategory") + "']").change();
+        if (sessionStorage.getItem("ffy.chosenLibrary") != null) {
+            var selectedValue = sessionStorage.getItem("ffy.chosenLibrary");
+            $("#frontifyfilter_library_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenLibrary") + "']").attr('selected', 'selected');
+            $("#frontifyfilter_library_selector coral-select-item[value='" + sessionStorage.getItem("ffy.chosenLibrary") + "']").change();
         } else {
-            var firstProjectId = JSON.parse(sessionStorage.getItem("ffy.categories")).brands[0].projects[0].id;
-            $("#frontifyfilter_type_selector coral-select-item[value='" + firstProjectId + "']").attr('selected', 'selected');
-            $("#frontifyfilter_type_selector coral-select-item[value='" + firstProjectId + "']").change();
+            var firstProjectId = JSON.parse(sessionStorage.getItem("ffy.libraries")).brands[0].projects[0].id;
+            $("#frontifyfilter_library_selector coral-select-item[value='" + firstProjectId + "']").attr('selected', 'selected');
+            $("#frontifyfilter_library_selector coral-select-item[value='" + firstProjectId + "']").change();
 
     }
 
