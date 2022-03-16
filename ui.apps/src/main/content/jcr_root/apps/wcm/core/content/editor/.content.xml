@@ -172,15 +172,42 @@
                                                 </items>
                                             </assetType>
                                             <library
-                                                    jcr:primaryType="nt:unstructured"
-                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                    emptyText="Filter by library"
-                                                    filterType="General"
-                                                    name="frontifyfilter_library_selector"
-                                                    granite:id="frontifyfilter_library_selector">
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                emptyText="Filter by library"
+                                                filterType="General"
+                                                name="frontifyfilter_library_selector"
+                                                granite:id="frontifyfilter_library_selector">
                                                 <items jcr:primaryType="nt:unstructured">
                                                 </items>
                                             </library>
+                                            <filter
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                filterType="General"
+                                                variant="quiet"
+                                                name="frontifyfilter_sort_selector"
+                                                granite:id="frontifyfilter_sort_selector">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <none
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="None"
+                                                        selected="{Boolean}true"
+                                                        value=""/>
+                                                    <relevance
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Relevance"
+                                                        value="RELEVANCE"/>
+                                                    <newest
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Newest"
+                                                        value="NEWEST"/>
+                                                    <oldest
+                                                        jcr:primaryType="nt:unstructured"
+                                                        text="Oldest"
+                                                        value="OLDEST"/>
+                                                </items>
+                                            </filter>
                                             <filterResultPanel
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/foundation/container"

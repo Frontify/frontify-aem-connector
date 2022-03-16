@@ -6,6 +6,7 @@ var noPages = 0;
 var pageNumber = 1;
 var scrollTriggered = false;
 var frontifyAssets = null;
+var selectedSort = "";
 var selectedLibrary = "";
 var selectedType = "";
 
@@ -144,12 +145,12 @@ function renderAssets(frontifyAssets) {
 }
 
 function cleanUpDataAssets(data) {
-  return data.filter(function (element, index) {
-    if (element !== null && element !== undefined && element.hasOwnProperty("previewUrl")) {
-      return element;
-    }
+    return  data.filter(function(element, index) {
+        if (element !== null && element !== undefined && element.hasOwnProperty("previewUrl")) {
+            return element;
+        }
 
-  });
+    });
 }
 
 
@@ -175,11 +176,11 @@ async function handleUpdateAssetList(endpoint, domain) {
       }
     }
   }
-  project: library(id: "$library") {
+   workspaceProject: library(id: "$library") {
     id
     name
     assetCount
-    assets(page: 1, query: {search: "", type: [$asset_type]}) {
+    assets(page: 1, query: {search: "", type: [$asset_type] $sort}) {
       total
       page
       limit
@@ -257,10 +258,24 @@ fragment onFile on File {
     resetGlobals();
   }
 
+
+  var sortListSelected = $("input[name=frontifyfilter_sort_selector]").val();
+  if (selectedSort !== sortListSelected) {
+    selectedSort = sortListSelected;
+    resetGlobals();
+  }
+
+  if (sortListSelected != "") {
+    queryParsed = queryParsed.replace(new RegExp(/\$sort/g), ",sortBy: " + sortListSelected);
+  } else {
+    queryParsed = queryParsed.replace(new RegExp(/\$sort/g), "");
+  }
+
   if ((librariesListSelected !== null || librariesListSelected !== undefined) && (typesListSelected !== null || typesListSelected !== undefined)) {
     if (pageNumber === noPages) {
       return;
     }
+
     if (hasNextPage && pageNumber < noPages) {
       $(".resultspinner").show();
       pageNumber += 1;
@@ -280,16 +295,16 @@ fragment onFile on File {
 
   try {
     data = await graphQLClient.request(queryParsed);
-    hasNextPage = data.project.assets.hasNextPage;
-    noPages = Math.ceil(data.project.assets.total / data.project.assets.limit);
+    hasNextPage = data.workspaceProject.assets.hasNextPage;
+    noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
   } catch (error) {
     $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
   }
 
-  if (data !== null && data.project.assets != null && data.project.assets.items != null && !scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(data.project.assets.items);
+  if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
+    frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
   } else if (data !== null && scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.project.assets.items));
+    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
   } else {
     frontifyAssets = [];
   }
@@ -342,10 +357,10 @@ export function obtainCloudConfiguration() {
 }
 
 function initSearch() {
-  obtainCloudConfiguration();
+    obtainCloudConfiguration();
 }
 
-if (localStorage.FrontifyAuthenticator_token) {
+if( localStorage.FrontifyAuthenticator_token ) {
   $('.frontify-login-panel').hide();
   $('.frontify-logout-panel').show();
   $('.frontify-filter-panel').show();
@@ -368,6 +383,12 @@ $("#frontifyfilter_library_selector").on("change", function (event) {
   }
 });
 
+$("#frontifyfilter_sort_selector").on("change", function (event) {
+  if (typeof (event.isTrigger) === 'undefined') {
+    obtainCloudConfiguration();
+  }
+});
+
 $("#frontifyfilter_type_selector").on("change", function (event) {
   if (typeof (event.isTrigger) === 'undefined') {
     obtainCloudConfiguration();
@@ -382,16 +403,16 @@ $("#frontifysearch").on("change", function (event) {
 });
 
 
-$('.frontify-content-panel').on('scroll', function () {
-  if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-    if (!scrollTriggered) {
-      obtainCloudConfiguration();
+$('.frontify-content-panel').on('scroll', function() {
+    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        if(!scrollTriggered){
+            obtainCloudConfiguration();
+        }
     }
-  }
 });
 
 $(".clearFrontifySearch").on("click", function () {
-  $("#frontifysearch").val("");
-  resetGlobals();
-  obtainCloudConfiguration();
+    $("#frontifysearch").val("");
+    resetGlobals();
+    obtainCloudConfiguration();
 });
