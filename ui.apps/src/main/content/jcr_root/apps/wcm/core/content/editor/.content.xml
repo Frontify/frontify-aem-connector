@@ -170,7 +170,17 @@
                                                         text="File"
                                                         value="FILE"/>
                                                 </items>
-                                            </assettype>
+                                            </assetType>
+                                            <library
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                emptyText="Filter by library"
+                                                filterType="General"
+                                                name="frontifyfilter_library_selector"
+                                                granite:id="frontifyfilter_library_selector">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                </items>
+                                            </library>
                                             <filter
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/select"
@@ -198,17 +208,6 @@
                                                         value="OLDEST"/>
                                                 </items>
                                             </filter>
-                                            </assetType>
-                                            <library
-                                                    jcr:primaryType="nt:unstructured"
-                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                    emptyText="Filter by library"
-                                                    filterType="General"
-                                                    name="frontifyfilter_library_selector"
-                                                    granite:id="frontifyfilter_library_selector">
-                                                <items jcr:primaryType="nt:unstructured">
-                                                </items>
-                                            </library>
                                             <filterResultPanel
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/foundation/container"

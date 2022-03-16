@@ -6,7 +6,6 @@ var noPages = 0;
 var pageNumber = 1;
 var scrollTriggered = false;
 var frontifyAssets = null;
-var selectedCategory = "";
 var selectedSort = "";
 var selectedLibrary = "";
 var selectedType = "";
@@ -177,11 +176,11 @@ async function handleUpdateAssetList(endpoint, domain) {
       }
     }
   }
-  project: library(id: "$library") {
+   workspaceProject: library(id: "$library") {
     id
     name
     assetCount
-    assets(page: 1, query: {search: "", type: [$asset_type]}, $sort) {
+    assets(page: 1, query: {search: "", type: [$asset_type] $sort}) {
       total
       page
       limit
@@ -276,6 +275,7 @@ fragment onFile on File {
     if (pageNumber === noPages) {
       return;
     }
+
     if (hasNextPage && pageNumber < noPages) {
       $(".resultspinner").show();
       pageNumber += 1;
@@ -295,16 +295,16 @@ fragment onFile on File {
 
   try {
     data = await graphQLClient.request(queryParsed);
-    hasNextPage = data.project.assets.hasNextPage;
-    noPages = Math.ceil(data.project.assets.total / data.project.assets.limit);
+    hasNextPage = data.workspaceProject.assets.hasNextPage;
+    noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
   } catch (error) {
     $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
   }
 
-  if (data !== null && data.project.assets != null && data.project.assets.items != null && !scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(data.project.assets.items);
+  if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
+    frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
   } else if (data !== null && scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.project.assets.items));
+    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
   } else {
     frontifyAssets = [];
   }
