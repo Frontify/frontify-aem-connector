@@ -387,6 +387,13 @@ if( localStorage.FrontifyAuthenticator_token ) {
 
 }
 
+$("#frontifyfilter_brand_selector").on("change", function (event) {
+  if (typeof (event.isTrigger) === 'undefined') {
+    sessionStorage.setItem("ffy.chosenBrand", $("input[name=frontifyfilter_brand_selector]").val());
+    obtainCloudConfiguration();
+  }
+});
+
 $("#frontifyfilter_library_selector").on("change", function (event) {
   if (typeof (event.isTrigger) === 'undefined') {
     sessionStorage.setItem("ffy.chosenLibrary", $("input[name=frontifyfilter_library_selector]").val());

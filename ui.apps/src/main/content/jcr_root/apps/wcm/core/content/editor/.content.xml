@@ -139,7 +139,6 @@
                                             <brand
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                emptyText="Filter by brand"
                                                 filterType="General"
                                                 name="frontifyfilter_brand_selector"
                                                 granite:id="frontifyfilter_brand_selector">
@@ -149,7 +148,6 @@
                                             <library
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                emptyText="Filter by library"
                                                 filterType="General"
                                                 name="frontifyfilter_library_selector"
                                                 granite:id="frontifyfilter_library_selector">
