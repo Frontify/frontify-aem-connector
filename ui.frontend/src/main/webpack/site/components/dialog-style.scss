@@ -61,6 +61,8 @@
 
 .sidepanel .frontify-content-panel {
   bottom: 0;
+  float: none;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -92,6 +94,18 @@
 .frontify-type-file {
   width: 50% !important;
   padding: 1.5rem;
+}
+
+#frontifyfilter_sort_selector {
+  float: left;
+  width: 50%;
+  margin-bottom: 0.4375rem;
+}
+
+#frontifyfilter_type_selector {
+  float: right;
+  width: 50%;
+  margin-bottom: 0.4375rem;
 }
 
 @media screen and (min-width: 1025px) {
