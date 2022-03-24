@@ -87,7 +87,11 @@ export async function handleUpdateLibrariesList(endpoint, domain, callback) {
       }
     }
     var selectedBrand = JSON.parse(sessionStorage.getItem("ffy.libraries")).brands[0].id;
-    var selectedLibrary = JSON.parse(sessionStorage.getItem("ffy.libraries")).brands[0].libraries.items[0].id;
+    if(JSON.parse(sessionStorage.getItem("ffy.libraries")).brands[0].libraries.total > 0) {
+      var selectedLibrary = JSON.parse(sessionStorage.getItem("ffy.libraries")).brands[0].libraries.items[0].id;
+    } else {
+      var selectedLibrary;
+    }
     if (sessionStorage.getItem("ffy.chosenBrand") != null) {
       selectedBrand = sessionStorage.getItem("ffy.chosenBrand");
     }

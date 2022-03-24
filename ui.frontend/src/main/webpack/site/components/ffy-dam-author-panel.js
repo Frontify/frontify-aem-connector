@@ -54,7 +54,7 @@ function renderAssets(frontifyAssets) {
             &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
             &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
-                                data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
+                                data-path=${frontifyAsset.imagePreviewUrl} data-asset-group="ffymedia"
                                 data-type="Images"
                                 data-asset-mimetype="${typename}/${frontifyAsset.extension}">
                         <coral-card-asset>
@@ -188,7 +188,7 @@ async function handleUpdateAssetList(endpoint, domain) {
     id
     name
     assetCount
-    assets(page: 1, query: {search: "", type: [$asset_type], sortBy: $sort}) {
+    assets(page: 1, query: {search: $term, type: [$asset_type], sortBy: $sort}) {
       total
       page
       limit
@@ -282,7 +282,7 @@ fragment onFile on File {
     resetGlobals();
   }
 
-  if (librariesListSelected !== null || librariesListSelected !== undefined) {
+  if (librariesListSelected !== null && librariesListSelected !== undefined && librariesListSelected !== "") {
     if (pageNumber === noPages) {
       return;
     }
@@ -296,37 +296,37 @@ fragment onFile on File {
       queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected).replace(new RegExp(/\$sort/g), selectedSort); // check
 
     }
+    var queryTerm = JSON.stringify($("#frontifysearch").val());
+    queryParsed = queryParsed.replace(new RegExp(/\$term/g), queryTerm);
+    var data;
+
+    try {
+      data = await graphQLClient.request(queryParsed);
+      hasNextPage = data.workspaceProject.assets.hasNextPage;
+      noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
+    } catch (error) {
+      $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
+    }
+
+    if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
+      frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
+    } else if (data !== null && scrollTriggered) {
+      frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
+    } else {
+      frontifyAssets = [];
+    }
+
+    if (Array.isArray(frontifyAssets) && frontifyAssets.length) {
+      $(".emptyresult").hide();
+      $(".resultspinner").hide();
+      renderAssets(cleanUpDataAssets(frontifyAssets));
+      $('.frontifyfinder').show();
+    } else {
+      $('.frontifyfinder').hide();
+      $(".emptyresult").show();
+    }
   } else {
-    $('.frontifyfinder').hide();
-    $(".emptyresult").show();
-  }
-  var queryTerm = JSON.stringify($("#frontifysearch").val());
-  queryParsed = queryParsed.replace(new RegExp(/\$term/g), queryTerm);
-  var data;
-
-  try {
-    data = await graphQLClient.request(queryParsed);
-    hasNextPage = data.workspaceProject.assets.hasNextPage;
-    noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
-  } catch (error) {
-    $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
-  }
-
-  if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
-  } else if (data !== null && scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
-  } else {
-    frontifyAssets = [];
-  }
-
-
-  if (Array.isArray(frontifyAssets) && frontifyAssets.length) {
-    $(".emptyresult").hide();
-    $(".resultspinner").hide();
-    renderAssets(cleanUpDataAssets(frontifyAssets));
-    $('.frontifyfinder').show();
-  } else {
+    resetGlobals();
     $('.frontifyfinder').hide();
     $(".emptyresult").show();
   }
