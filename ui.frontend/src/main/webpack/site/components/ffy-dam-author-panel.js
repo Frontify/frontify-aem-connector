@@ -8,6 +8,7 @@ var scrollTriggered = false;
 var frontifyAssets = null;
 var selectedSort = "";
 var selectedLibrary = "";
+var selectedBrand = "";
 var selectedType = "";
 
 function resetGlobals() {
@@ -26,9 +27,16 @@ function getAltText(asset) {
   }
 }
 
+function cleanUrl(url, paramToDelete) {
+  var urlParts = url.split('?');
+  var params = new URLSearchParams(urlParts[1]);
+  params.delete(paramToDelete);
+  return urlParts[0] + '?' + params.toString()
+}
+
 function renderAssets(frontifyAssets) {
 
-  frontifyAssets.forEach(asset => asset.imagePreviewUrl = asset.previewUrl.replace(new RegExp(/\{width\}$/g), 319));
+  frontifyAssets.forEach(asset => asset.imagePreviewUrl = cleanUrl(asset.previewUrl.replace(new RegExp(/\{width\}/g), 319), "format"));
   var coralItems = ``;
   for (const frontifyAsset of frontifyAssets) {
     const focalPoint = frontifyAsset.focalPoint === null ? "" : frontifyAsset.focalPoint;
@@ -46,7 +54,7 @@ function renderAssets(frontifyAssets) {
             &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
             &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
-                                data-path=${frontifyAsset.downloadUrl} data-asset-group="ffymedia"
+                                data-path=${frontifyAsset.imagePreviewUrl} data-asset-group="ffymedia"
                                 data-type="Images"
                                 data-asset-mimetype="${typename}/${frontifyAsset.extension}">
                         <coral-card-asset>
@@ -72,7 +80,7 @@ function renderAssets(frontifyAssets) {
                                 data-param="{
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;, 
-            &quot;./previewUrl&quot;:&quot;${frontifyAsset.previewUrl}&quot;,
+            &quot;./previewUrl&quot;:&quot;${frontifyAsset.imagePreviewUrl}&quot;,
             &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
             &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./extension&quot;:&quot;${frontifyAsset.extension}&quot;}"
@@ -97,10 +105,9 @@ function renderAssets(frontifyAssets) {
                     </coral-card>
                 </coral-masonry-item>`;
     } else {
-      var imagePreview = frontifyAsset.imagePreviewUrl;
       var mimetype = "application";
       if (typename === "audio") {
-        imagePreview += '&format=jpg';
+        frontifyAsset.imagePreviewUrl += "&format=jpg";
         mimetype = "audio";
       }
       coralItems += `<coral-masonry-item class="coral3-Masonry-item is-managed" aria-selected="false">
@@ -111,6 +118,7 @@ function renderAssets(frontifyAssets) {
             &quot;./imageRotate@Delete&quot;:&quot;&quot;,
             &quot;./alt&quot;:&quot;${getAltText(frontifyAsset)}&quot;,
             &quot;./title&quot;:&quot;${frontifyAsset.title}&quot;,
+            &quot;./previewUrl&quot;:&quot;${frontifyAsset.imagePreviewUrl}&quot;,
             &quot;./size&quot;:&quot;${frontifyAsset.size / 1024} KB&quot;,
             &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
             &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
@@ -120,7 +128,7 @@ function renderAssets(frontifyAssets) {
                                 data-asset-mimetype="${mimetype}/${frontifyAsset.extension}">
                         <coral-card-asset>
                             <img class="cq-dd-image frontify-type-${typename}"
-                                 src=${imagePreview}
+                                 src=${frontifyAsset.imagePreviewUrl}
                                  alt="frontifyImage">
                         </coral-card-asset>
                         <div class="coral3-Card-wrapper">
@@ -180,7 +188,7 @@ async function handleUpdateAssetList(endpoint, domain) {
     id
     name
     assetCount
-    assets(page: 1, query: {search: "", type: [$asset_type] $sort}) {
+    assets(page: 1, query: {search: $term, type: [$asset_type], sortBy: $sort}) {
       total
       page
       limit
@@ -252,6 +260,12 @@ fragment onFile on File {
     resetGlobals();
   }
 
+  var brandsListSelected = $("input[name=frontifyfilter_brand_selector]").val();
+  if (selectedBrand !== brandsListSelected) {
+    selectedBrand = brandsListSelected;
+    resetGlobals();
+  }
+
   var typesListSelected = $("input[name=frontifyfilter_type_selector]").val();
   if (selectedType !== typesListSelected) {
     selectedType = typesListSelected;
@@ -263,15 +277,12 @@ fragment onFile on File {
   if (selectedSort !== sortListSelected) {
     selectedSort = sortListSelected;
     resetGlobals();
+  } else if(sortListSelected === "") {
+    selectedSort = "RELEVANCE";
+    resetGlobals();
   }
 
-  if (sortListSelected != "") {
-    queryParsed = queryParsed.replace(new RegExp(/\$sort/g), ",sortBy: " + sortListSelected);
-  } else {
-    queryParsed = queryParsed.replace(new RegExp(/\$sort/g), "");
-  }
-
-  if ((librariesListSelected !== null || librariesListSelected !== undefined) && (typesListSelected !== null || typesListSelected !== undefined)) {
+  if (librariesListSelected !== null && librariesListSelected !== undefined && librariesListSelected !== "") {
     if (pageNumber === noPages) {
       return;
     }
@@ -279,43 +290,43 @@ fragment onFile on File {
     if (hasNextPage && pageNumber < noPages) {
       $(".resultspinner").show();
       pageNumber += 1;
-      queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected); // check
+      queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected).replace(new RegExp(/\$sort/g), selectedSort); // check
       scrollTriggered = true;
     } else {
-      queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected); // check
+      queryParsed = queryParsed.replace(new RegExp(/\$library/g), librariesListSelected).replace(new RegExp(/\$page/g), pageNumber).replace(new RegExp(/\$asset_type/g), typesListSelected).replace(new RegExp(/\$sort/g), selectedSort); // check
 
     }
+    var queryTerm = JSON.stringify($("#frontifysearch").val());
+    queryParsed = queryParsed.replace(new RegExp(/\$term/g), queryTerm);
+    var data;
+
+    try {
+      data = await graphQLClient.request(queryParsed);
+      hasNextPage = data.workspaceProject.assets.hasNextPage;
+      noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
+    } catch (error) {
+      $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
+    }
+
+    if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
+      frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
+    } else if (data !== null && scrollTriggered) {
+      frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
+    } else {
+      frontifyAssets = [];
+    }
+
+    if (Array.isArray(frontifyAssets) && frontifyAssets.length) {
+      $(".emptyresult").hide();
+      $(".resultspinner").hide();
+      renderAssets(cleanUpDataAssets(frontifyAssets));
+      $('.frontifyfinder').show();
+    } else {
+      $('.frontifyfinder').hide();
+      $(".emptyresult").show();
+    }
   } else {
-    $('.frontifyfinder').hide();
-    $(".emptyresult").show();
-  }
-  var queryTerm = JSON.stringify($("#frontifysearch").val());
-  queryParsed = queryParsed.replace(new RegExp(/\$term/g), queryTerm);
-  var data;
-
-  try {
-    data = await graphQLClient.request(queryParsed);
-    hasNextPage = data.workspaceProject.assets.hasNextPage;
-    noPages = Math.ceil(data.workspaceProject.assets.total / data.workspaceProject.assets.limit);
-  } catch (error) {
-    $(window).adaptTo("foundation-ui").alert("Error", "Error while executing the search");
-  }
-
-  if (data !== null && data.workspaceProject.assets != null && data.workspaceProject.assets.items != null && !scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(data.workspaceProject.assets.items);
-  } else if (data !== null && scrollTriggered) {
-    frontifyAssets = cleanUpDataAssets(frontifyAssets.concat(data.workspaceProject.assets.items));
-  } else {
-    frontifyAssets = [];
-  }
-
-
-  if (Array.isArray(frontifyAssets) && frontifyAssets.length) {
-    $(".emptyresult").hide();
-    $(".resultspinner").hide();
-    renderAssets(cleanUpDataAssets(frontifyAssets));
-    $('.frontifyfinder').show();
-  } else {
+    resetGlobals();
     $('.frontifyfinder').hide();
     $(".emptyresult").show();
   }
@@ -375,6 +386,13 @@ if( localStorage.FrontifyAuthenticator_token ) {
   $(".resultspinner").hide();
 
 }
+
+$("#frontifyfilter_brand_selector").on("change", function (event) {
+  if (typeof (event.isTrigger) === 'undefined') {
+    sessionStorage.setItem("ffy.chosenBrand", $("input[name=frontifyfilter_brand_selector]").val());
+    obtainCloudConfiguration();
+  }
+});
 
 $("#frontifyfilter_library_selector").on("change", function (event) {
   if (typeof (event.isTrigger) === 'undefined') {
