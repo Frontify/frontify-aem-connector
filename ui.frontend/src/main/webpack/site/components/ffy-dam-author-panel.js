@@ -54,7 +54,7 @@ function renderAssets(frontifyAssets) {
             &quot;./id&quot;:&quot;${frontifyAsset.id}&quot;, 
             &quot;./description&quot;:&quot;${frontifyAsset.description}&quot;,
             &quot;./focalPoint&quot;:&quot;${focalPoint}&quot;}"
-                                data-path=${frontifyAsset.imagePreviewUrl} data-asset-group="ffymedia"
+                                data-path=${frontifyAsset.previewUrl} data-asset-group="ffymedia"
                                 data-type="Images"
                                 data-asset-mimetype="${typename}/${frontifyAsset.extension}">
                         <coral-card-asset>
