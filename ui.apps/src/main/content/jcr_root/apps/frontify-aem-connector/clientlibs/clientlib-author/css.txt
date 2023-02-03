@@ -1,2 +1,0 @@
-#base=css
-dialog-style.css
