@@ -1,0 +1,56 @@
+name: Publish package to the Maven Central Repository
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: 'Release version (major.minor.patch)'
+        required: false
+        default: ''
+      dryRun:
+        description: 'Dry Run? (false to do an actual release)'
+        required: true
+        default: 'true'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - id: install-secret-key
+        name: Install gpg secret key
+        run: |
+         cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+         gpg --list-secret-keys --keyid-format LONG
+
+      - name: Configure git user for release commits
+        env:
+          X_GITHUB_USERNAME: ${{ secrets.RELEASE_GITHUB_USERNAME }}
+        run: |
+          git config user.email "nicolas.hirrle@valtech.com"
+          git config user.name "${X_GITHUB_USERNAME}"
+
+      - id: publish-to-central
+        name: Publish to Central Repository
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          X_GITHUB_USERNAME: ${{ secrets.RELEASE_GITHUB_USERNAME }}
+          X_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
+        run: |
+          mvn -P release-sign-artifacts \
+            --no-transfer-progress \
+            --batch-mode \
+            -s ./.github/workflows/settings.xml \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            clean release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -Dtag=${{ github.event.inputs.releaseVersion }} -DdryRun=${{ github.event.inputs.dryRun }} -Darguments="-Dbaseline.skip=true"
+
