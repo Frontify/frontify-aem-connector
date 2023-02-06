@@ -1,5 +1,7 @@
 # Frontify AEM Connector
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.frontify/frontify-aem-connector.all/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.frontify/frontify-aem-connector.all)
+
 ## Purpose
 
 The Frontify AEM Connector allows to deliver meaningful experiences with digital assets originating from Frontify DAM in Adobe Experience Manager (AEM). The content author searches Frontify image assets directly from AEM pages. Integrated assets are delivered as part of AEM pages and are linked to the Frontify CDN.
@@ -17,7 +19,7 @@ The Frontify AEM Connector delivers the following parts:
 
 For the Frontify AEM Connector to properly work, the following pre-requisites are required
 
-1. Adobe Experience Manager 6.5 with installed SP4 (aem-service-pkg-6.5.4.zip)
+1. Adobe Experience Manager 6.5 with installed SP4 (aem-service-pkg-6.5.4.zip). SP 14 is tested as well, use version 6.5.14-2.0.9
 1. AEM Connector to be installed on AEM
 1. Valid Frontify DAM account
 
