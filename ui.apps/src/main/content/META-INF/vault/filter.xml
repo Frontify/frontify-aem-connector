@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
     <filter root="/apps/frontify-aem-connector"/>
-    <filter root="/apps/wcm" mode="merge"/>
-    <filter root="/apps/cq" mode="merge"/>
+
+    <filter root="/apps/wcm">
+        <include pattern="/apps/wcm/core"/>
+        <include pattern="/apps/wcm/core/content"/>
+        <include pattern="/apps/wcm/core/content/editor"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels/edit"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels/edit/items"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels/edit/items/tabs"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels/edit/items/tabs/items"/>
+        <include pattern="/apps/wcm/core/content/editor/jcr:content/sidepanels/edit/items/tabs/items/frontifyTab(/.*)?"/>
+    </filter>
+
+    <filter root="/apps/cq">
+        <include pattern="/apps/cq/experience-fragments"/>
+        <include pattern="/apps/cq/experience-fragments/content"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit/items"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit/items/tabs"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit/items/tabs/items"/>
+        <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit/items/tabs/items/includeFrontifyTab(/.*)?"/>
+    </filter>
+
     <filter root="/content/dam/frontify-aem-connector" mode="merge"/>
     <filter root="/etc/cloudservices/ffyconfig" mode="merge"/>
 </workspaceFilter>
