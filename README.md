@@ -19,7 +19,7 @@ The Frontify AEM Connector delivers the following parts:
 
 For the Frontify AEM Connector to properly work, the following pre-requisites are required
 
-1. Adobe Experience Manager 6.5 with installed ServicePack 14 or above. Use version 6.5.14-2.0.9
+1. Adobe Experience Manager 6.5 with installed ServicePack 14 or above. Use latest version https://search.maven.org/remotecontent?filepath=io/github/frontify/frontify-aem-connector.all
 1. AEM Connector to be installed on AEM
 1. Valid Frontify DAM account
 
