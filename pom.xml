@@ -19,7 +19,7 @@
     <groupId>io.github.frontify</groupId>
     <artifactId>frontify-aem-connector</artifactId>
     <packaging>pom</packaging>
-   <version>6.5.14-2.0.11-SNAPSHOT</version>
+   <version>6.5.14-2.0.11</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Connector to use Frontify assets within Adobe Experience Manager (AEM).</description>
     <url>https://github.com/Frontify/frontify-aem-connector</url>
@@ -45,7 +45,7 @@
         <connection>scm:git:git://github.com/Frontify/frontify-aem-connector.git</connection>
         <developerConnection>scm:git:https://github.com/Frontify/frontify-aem-connector.git</developerConnection>
         <url>https://github.com/Frontify/frontify-aem-connector/tree/master</url>
-      <tag>v6.5.4-2.0.8-SNAPSHOT</tag>
+      <tag>v6.5.14-2.0.11</tag>
   </scm>
 
     <distributionManagement>
