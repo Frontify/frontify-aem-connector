@@ -115,6 +115,7 @@ public class CloudConfigServlet extends SlingSafeMethodsServlet {
                 } else {
                     writer.println(ERROR_NO_CONFIGURATION_FOUND);
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 }
 
                 Gson gson = new Gson();
