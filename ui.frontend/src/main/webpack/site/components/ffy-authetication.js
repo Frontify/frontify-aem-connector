@@ -65,6 +65,11 @@ $("#frontifylogin").on("click", function (event) {
 $("#frontifylogout").on("click", function (event) {
 
     localStorage.removeItem("FrontifyAuthenticator_token");
+    Object.keys(sessionStorage).forEach((key) => {
+        if (key.startsWith("ffy."))  {
+            sessionStorage.removeItem(key);
+        }
+    });
     $('.frontify-logout-panel').hide();
     $('.frontify-filter-panel').hide();
     $('.frontifyfinder').hide();

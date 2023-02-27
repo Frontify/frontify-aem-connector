@@ -177,10 +177,12 @@ async function handleUpdateAssetList(endpoint, domain) {
   {
   brands {
     id
-    projects {
+    libraries(limit: 100, page: 1) {
       __typename
-      ... on Library {
-        id
+      ... on LibraryItems {
+        items {
+          id
+        }
       }
     }
   }
