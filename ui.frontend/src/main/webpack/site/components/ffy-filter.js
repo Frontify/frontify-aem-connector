@@ -41,7 +41,7 @@ export async function handleUpdateLibrariesList(endpoint, domain, callback) {
           ... on Library {
             id
             name
-            assetCount
+            assets {total}
           }
         }
       }

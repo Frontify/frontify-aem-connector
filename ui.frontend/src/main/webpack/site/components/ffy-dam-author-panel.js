@@ -189,7 +189,6 @@ async function handleUpdateAssetList(endpoint, domain) {
    workspaceProject: library(id: "$library") {
     id
     name
-    assetCount
     assets(page: 1, query: {search: $term, type: [$asset_type], sortBy: $sort}) {
       total
       page
