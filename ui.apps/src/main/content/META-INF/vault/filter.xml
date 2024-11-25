@@ -28,6 +28,5 @@
         <include pattern="/apps/cq/experience-fragments/content/editor/jcr:content/sidepanels/edit/items/tabs/items/includeFrontifyTab(/.*)?"/>
     </filter>
 
-    <filter root="/content/dam/frontify-aem-connector" mode="merge"/>
     <filter root="/etc/cloudservices/ffyconfig" mode="merge"/>
 </workspaceFilter>
